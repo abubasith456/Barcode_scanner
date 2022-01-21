@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.grootan.utils.EmailValidator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,21 +23,25 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
+import com.google.firebase.firestore.QuerySnapshot;
+import java.util.ArrayList;
 import java.util.HashMap;
 
-import io.grpc.okhttp.internal.Util;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText editTextEmailInput, editTextPasswordInput, editTextSignUpUserName, editTextSignUpEmail, editTextSignUpMobileNumber, editTextSignUpPassword;
+    EditText editTextEmailInput, editTextPasswordInput, editTextSignUpUserName, editTextSignUpEmail, editTextSignUpPassword;
     TextView mTextViewErrorEmail, mTextViewErrorPassword, mTextViewUserNameError, mTextViewSignupEmailError, mTextViewSignupMobileNumberError, mTextViewPasswordError;
     LinearLayout layoutForgotPassword, layoutSignIn, layoutRegister, linearLayoutClose, layoutSignUp;
     FrameLayout frameLayoutLogin, frameLayoutRegister;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
     EmailValidator emailValidator;
+    Spinner spinnerLoggedUser;
+    ArrayList<String> spinnerArrayList;
+    ArrayAdapter<String> spinnerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         linearLayoutClose = findViewById(R.id.linearLayoutClose);
         frameLayoutLogin = findViewById(R.id.frameLayoutLogin);
         frameLayoutRegister = findViewById(R.id.frameLayoutRegister);
+        spinnerLoggedUser = findViewById(R.id.spinnerLoggedUser);
 
         //Register
         editTextSignUpUserName = findViewById(R.id.editTextSignUpUserName);
@@ -65,6 +72,10 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         emailValidator = new EmailValidator();
+        spinnerArrayList = new ArrayList<>();
+        spinnerAdapter = new ArrayAdapter<>(LoginActivity.this, android.R.layout.simple_spinner_dropdown_item, spinnerArrayList);
+        spinnerLoggedUser.setAdapter(spinnerAdapter);
+        loadUsers();
 
         layoutSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +129,45 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        spinnerLoggedUser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String item = adapterView.getItemAtPosition(i).toString();
+                Toast.makeText(getApplicationContext(), item, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void loadUsers() {
+        try {
+            firebaseFirestore.collection("Users").get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                    String data = documentSnapshot.getString("userEmailAddress");
+                                    spinnerArrayList.add(data);
+                                }
+                                spinnerAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } catch (Exception exception) {
+            Log.e("Error ==> ", "" + exception);
+        }
     }
 
     public void firebaseLogin() {
@@ -153,7 +203,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void firebaseRegister() {
         try {
-            if (registerValidate(editTextSignUpUserName.getText().toString(), editTextSignUpMobileNumber.getText().toString(), editTextSignUpEmail.getText().toString(), editTextSignUpPassword.getText().toString())) {
+            if (registerValidate(editTextSignUpUserName.getText().toString(), editTextSignUpEmail.getText().toString(), editTextSignUpPassword.getText().toString())) {
                 firebaseAuth.createUserWithEmailAndPassword(editTextSignUpEmail.getText().toString(), editTextSignUpPassword.getText().toString())
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -161,8 +211,10 @@ public class LoginActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(), "Register Successfully", Toast.LENGTH_SHORT).show();
                                     String userId = firebaseAuth.getCurrentUser().getUid();
-                                    storeUserInfo(userId, editTextSignUpUserName.getText().toString(), editTextSignUpEmail.getText().toString(), editTextSignUpMobileNumber.getText().toString());
+                                    storeUserInfo(userId, editTextSignUpUserName.getText().toString(), editTextSignUpEmail.getText().toString());
+                                    String indicator = "new";
                                     Intent intent = new Intent(getApplicationContext(), ScanBarCodeActivity.class);
+                                    intent.putExtra("indicator", indicator);
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -180,7 +232,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void storeUserInfo(String userId, String userName, String email, String mobileNumber) {
+
+    private void storeUserInfo(String userId, String userName, String email) {
         try {
             HashMap<String, Object> addFieldInfo = new HashMap<>();
             addFieldInfo.put("userId", "" + userId);
@@ -219,11 +272,11 @@ public class LoginActivity extends AppCompatActivity {
             mTextViewSignupEmailError.setVisibility(View.GONE);
             mTextViewPasswordError.setVisibility(View.GONE);
             editTextSignUpUserName.setText("");
-            editTextSignUpMobileNumber.setText("");
+//            editTextSignUpMobileNumber.setText("");
             editTextSignUpEmail.setText("");
             editTextSignUpPassword.setText("");
             editTextSignUpUserName.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
-            editTextSignUpMobileNumber.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+//            editTextSignUpMobileNumber.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
             editTextSignUpEmail.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
             editTextSignUpPassword.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
         } catch (Exception exception) {
@@ -244,13 +297,12 @@ public class LoginActivity extends AppCompatActivity {
                 mTextViewErrorEmail.setVisibility(View.VISIBLE);
                 mTextViewErrorEmail.setText(getResources().getString(R.string.email_error));
                 valid = false;
-            }else if(!emailValidator.validate(strEmail)){
+            } else if (!emailValidator.validate(strEmail)) {
                 mTextViewErrorEmail.setVisibility(View.VISIBLE);
                 editTextEmailInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
                 mTextViewErrorEmail.setText(getResources().getString(R.string.email_invalid));
                 valid = false;
-            }
-            else {
+            } else {
                 editTextEmailInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
                 mTextViewErrorEmail.setVisibility(View.GONE);
             }
@@ -269,7 +321,7 @@ public class LoginActivity extends AppCompatActivity {
         return valid;
     }
 
-    public boolean registerValidate(String strFirstName, String strMobible, String strEmail, String strPassword) {
+    public boolean registerValidate(String strFirstName, String strEmail, String strPassword) {
         boolean valid = true;
         try {
             if (strFirstName.isEmpty()) {
@@ -281,15 +333,15 @@ public class LoginActivity extends AppCompatActivity {
                 mTextViewUserNameError.setVisibility(View.GONE);
                 editTextSignUpUserName.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
             }
-            if (strMobible.isEmpty()) {
-                mTextViewSignupMobileNumberError.setVisibility(View.VISIBLE);
-                editTextSignUpMobileNumber.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
-                mTextViewSignupMobileNumberError.setText(getResources().getString(R.string.error_number));
-                valid = false;
-            } else {
-                mTextViewSignupMobileNumberError.setVisibility(View.GONE);
-                editTextSignUpMobileNumber.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
-            }
+//            if (strMobible.isEmpty()) {
+//                mTextViewSignupMobileNumberError.setVisibility(View.VISIBLE);
+//                editTextSignUpMobileNumber.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
+//                mTextViewSignupMobileNumberError.setText(getResources().getString(R.string.error_number));
+//                valid = false;
+//            } else {
+//                mTextViewSignupMobileNumberError.setVisibility(View.GONE);
+//                editTextSignUpMobileNumber.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+//            }
             if (strEmail.isEmpty()) {
                 mTextViewSignupEmailError.setVisibility(View.VISIBLE);
                 editTextSignUpEmail.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));

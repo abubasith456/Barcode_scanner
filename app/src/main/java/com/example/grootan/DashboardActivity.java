@@ -49,7 +49,7 @@ public class DashboardActivity extends AppCompatActivity {
     FloatingActionButton floatingButtonOpenCamera;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    String timeStamp;
+    String timeStamp,QR_value;
     ScannedDataAdapter scannedDataAdapter;
 
     @Override
@@ -67,6 +67,7 @@ public class DashboardActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         timeStamp = "" + System.currentTimeMillis();
+        QR_value=getIntent().getStringExtra("QR_value");
         loadUserInfo();
         linear_layout_menu.setOnClickListener(new View.OnClickListener() {
             @Override

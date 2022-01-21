@@ -12,6 +12,7 @@ import android.util.Log;
 import android.util.Size;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,7 +67,7 @@ public class ScanBarCodeActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     FrameLayout sideMenu;
     LinearLayout linear_layout_back, sideMenuClose;
-    AppCompatImageView appCompatImageView;
+    ImageView appCompatImageView;
     TextView textViewLogout;
     String timeStamp, indicate;
 
@@ -83,13 +84,18 @@ public class ScanBarCodeActivity extends AppCompatActivity {
         sideMenu = findViewById(R.id.sideMenu);
         sideMenuClose = findViewById(R.id.sideMenuClose);
         textViewLogout = findViewById(R.id.textViewLogout);
-        appCompatImageView = findViewById(R.id.appCompatImageView);
+        appCompatImageView = findViewById(R.id.imageviewBack);
         indicate = getIntent().getStringExtra("indicator");
-//        if (indicate == "exist") {
-//            appCompatImageView.setImageResource(R.drawable.icon_back);
-//        } else {
-////            appCompatImageView.setImageResource(R.drawable.icon_menu);
-//        }
+
+        try {
+            if (indicate.equals("new")) {
+                appCompatImageView.setImageResource(R.drawable.icon_menu);
+            } else {
+                appCompatImageView.setImageResource(R.drawable.icon_back);
+            }
+        } catch (Exception exception) {
+            Log.e("Error ==> ", "" + exception);
+        }
 
         this.getWindow().setFlags(1024, 1024);
         cameraExecutor = Executors.newSingleThreadExecutor();
@@ -111,12 +117,21 @@ public class ScanBarCodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    Intent intent = new Intent(ScanBarCodeActivity.this, DashboardActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in_left,
-                            R.anim.slide_out_right);
-                    finish();
+                    try {
+                        if (indicate.equals("new")) {
+                            sideMenu.setVisibility(View.VISIBLE);
+                        } else {
+                            Intent intent = new Intent(ScanBarCodeActivity.this, DashboardActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.slide_in_left,
+                                    R.anim.slide_out_right);
+                            finish();
+                        }
+                    } catch (Exception exception) {
+                        Log.e("Error ==> ", "" + exception);
+                    }
+
 //                    sideMenu.setVisibility(View.VISIBLE);
                 } catch (Exception exception) {
                     Log.e("Error ==> ", "" + exception);
@@ -124,53 +139,53 @@ public class ScanBarCodeActivity extends AppCompatActivity {
             }
         });
 
-//        sideMenuClose.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                try {
-//                    sideMenu.setVisibility(View.GONE);
-//                } catch (Exception exception) {
-//                    Log.e("Error ==> ", "" + exception);
-//                }
-//            }
-//        });
+        sideMenuClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    sideMenu.setVisibility(View.GONE);
+                } catch (Exception exception) {
+                    Log.e("Error ==> ", "" + exception);
+                }
+            }
+        });
 
-//        textViewLogout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                try {
-//                    sideMenu.setVisibility(View.GONE);
-//                    AlertDialog.Builder builder1 = new AlertDialog.Builder(ScanBarCodeActivity.this);
-//                    builder1.setMessage("Are you sure.. do you want to logout?");
-//                    builder1.setCancelable(true);
-//
-//                    builder1.setPositiveButton(
-//                            "Yes",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    FirebaseAuth.getInstance().signOut();
-//                                    Intent intent = new Intent(ScanBarCodeActivity.this, LoginActivity.class);
-//                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                    startActivity(intent);
-//                                    finish();
-//                                }
-//                            });
-//
-//                    builder1.setNegativeButton(
-//                            "No",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    dialog.cancel();
-//                                }
-//                            });
-//
-//                    AlertDialog alert11 = builder1.create();
-//                    alert11.show();
-//                } catch (Exception exception) {
-//                    Log.e("Error ==> ", "" + exception);
-//                }
-//            }
-//        });
+        textViewLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    sideMenu.setVisibility(View.GONE);
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(ScanBarCodeActivity.this);
+                    builder1.setMessage("Are you sure.. do you want to logout?");
+                    builder1.setCancelable(true);
+
+                    builder1.setPositiveButton(
+                            "Yes",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    FirebaseAuth.getInstance().signOut();
+                                    Intent intent = new Intent(ScanBarCodeActivity.this, LoginActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+
+                    builder1.setNegativeButton(
+                            "No",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                } catch (Exception exception) {
+                    Log.e("Error ==> ", "" + exception);
+                }
+            }
+        });
 
     }
 
@@ -259,6 +274,12 @@ public class ScanBarCodeActivity extends AppCompatActivity {
                 String rawValue = barcode.getRawValue();
                 Toast.makeText(getApplicationContext(), rawValue, Toast.LENGTH_SHORT).show();
                 uploadDataToFirebase(rawValue);
+                Intent backIntent = new Intent(getApplicationContext(), DashboardActivity.class);
+                backIntent.putExtra("QR_value", rawValue);
+                startActivity(backIntent);
+                overridePendingTransition(R.anim.slide_in_left,
+                        R.anim.slide_out_right);
+                finish();
 //                Intent intent = new Intent();
 //                intent.putExtra("BarCode Value", rawValue);
 //                setResult(2, intent);

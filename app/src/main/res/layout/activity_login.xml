@@ -48,6 +48,12 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_20sdp" />
 
+            <Spinner
+                android:id="@+id/spinnerLoggedUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_15sdp"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_37sdp"

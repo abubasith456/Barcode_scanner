@@ -23,13 +23,13 @@
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageView
+                android:id="@+id/imageviewBack"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_gravity="center"
                 android:gravity="start"
                 android:src="@drawable/icon_back"
-                android:tint="@color/colorPrimaryDark"
                 app:tint="@color/colorWhite" />
         </LinearLayout>
 
@@ -85,79 +85,79 @@
 
     </FrameLayout>
 
-<!--    <FrameLayout-->
-<!--        android:id="@+id/sideMenu"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:clickable="true"-->
-<!--        android:focusable="true"-->
-<!--        android:focusableInTouchMode="true"-->
-<!--        android:visibility="gone">-->
+    <FrameLayout
+        android:id="@+id/sideMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone">
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:baselineAligned="false"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:weightSum="1"-->
-<!--            tools:ignore="UselessParent">-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            tools:ignore="UselessParent">
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="0.75"-->
-<!--                android:background="@color/colorWhite"-->
-<!--                android:orientation="vertical"-->
-<!--                tools:ignore="UselessParent">-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.75"
+                android:background="@color/colorWhite"
+                android:orientation="vertical"
+                tools:ignore="UselessParent">
 
-<!--                <TextView-->
-<!--                    android:id="@+id/textViewUserName"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="@dimen/_50sdp"-->
-<!--                    android:fontFamily="@font/work_sans_semibold"-->
-<!--                    android:gravity="start|center_vertical"-->
-<!--                    android:paddingStart="@dimen/_15sdp"-->
-<!--                    android:paddingEnd="@dimen/_15sdp"-->
-<!--                    android:text="Hi..Grootan user"-->
-<!--                    android:textColor="@color/colorAccent"-->
-<!--                    android:textSize="@dimen/_16sdp" />-->
+                <TextView
+                    android:id="@+id/textViewUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:fontFamily="@font/work_sans_semibold"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_15sdp"
+                    android:text="Hi..Grootan user"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/_16sdp" />
 
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="@dimen/_1sdp"-->
-<!--                    android:background="@color/colorBlack" />-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/colorBlack" />
 
-<!--                <TextView-->
-<!--                    android:id="@+id/textViewLogout"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="@dimen/_50sdp"-->
-<!--                    android:fontFamily="@font/work_sans_semibold"-->
-<!--                    android:gravity="start|center_vertical"-->
-<!--                    android:paddingStart="@dimen/_15sdp"-->
-<!--                    android:paddingEnd="@dimen/_15sdp"-->
-<!--                    android:text="Logout"-->
-<!--                    android:textColor="@color/colorAccent"-->
-<!--                    android:textSize="@dimen/_16sdp" />-->
+                <TextView
+                    android:id="@+id/textViewLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:fontFamily="@font/work_sans_semibold"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_15sdp"
+                    android:text="Logout"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/_16sdp" />
 
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="@dimen/_1sdp"-->
-<!--                    android:background="@color/colorBlack" />-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/colorBlack" />
 
-<!--            </LinearLayout>-->
+            </LinearLayout>
 
-<!--            <LinearLayout-->
-<!--                android:id="@+id/sideMenuClose"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="0.25"-->
-<!--                android:background="#7F000000"-->
-<!--                android:orientation="vertical"-->
-<!--                tools:ignore="UselessParent" />-->
+            <LinearLayout
+                android:id="@+id/sideMenuClose"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25"
+                android:background="#7F000000"
+                android:orientation="vertical"
+                tools:ignore="UselessParent" />
 
-<!--        </LinearLayout>-->
+        </LinearLayout>
 
-<!--    </FrameLayout>-->
+    </FrameLayout>
 
 
 </RelativeLayout>
