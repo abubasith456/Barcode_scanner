@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "1019503135871",
+    "project_id": "interview-74776",
+    "storage_bucket": "interview-74776.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019503135871:android:999f6d12de46e2527b434a",
+        "android_client_info": {
+          "package_name": "com.example.grootan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1019503135871-kvf4hmv27dp35plmkqhe2sji6r18esjc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGRaQo2MHDbtQGeBSdff0JuY7YTHHnhNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1019503135871-kvf4hmv27dp35plmkqhe2sji6r18esjc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1019503135871-cij9n0vqkg47nru6p3geka3ii47nv4ia.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.grootan"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019503135871:android:bb2475a2ef9209617b434a",
+        "android_client_info": {
+          "package_name": "com.example.puzzle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1019503135871-kvf4hmv27dp35plmkqhe2sji6r18esjc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGRaQo2MHDbtQGeBSdff0JuY7YTHHnhNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1019503135871-kvf4hmv27dp35plmkqhe2sji6r18esjc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1019503135871-cij9n0vqkg47nru6p3geka3ii47nv4ia.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.grootan"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

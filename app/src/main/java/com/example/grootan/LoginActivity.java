@@ -1,0 +1,338 @@
+package com.example.grootan;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.grootan.utils.EmailValidator;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+
+import io.grpc.okhttp.internal.Util;
+
+public class LoginActivity extends AppCompatActivity {
+
+    EditText editTextEmailInput, editTextPasswordInput, editTextSignUpUserName, editTextSignUpEmail, editTextSignUpMobileNumber, editTextSignUpPassword;
+    TextView mTextViewErrorEmail, mTextViewErrorPassword, mTextViewUserNameError, mTextViewSignupEmailError, mTextViewSignupMobileNumberError, mTextViewPasswordError;
+    LinearLayout layoutForgotPassword, layoutSignIn, layoutRegister, linearLayoutClose, layoutSignUp;
+    FrameLayout frameLayoutLogin, frameLayoutRegister;
+    FirebaseAuth firebaseAuth;
+    FirebaseFirestore firebaseFirestore;
+    EmailValidator emailValidator;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        editTextEmailInput = findViewById(R.id.editTextEmailInput);
+        editTextPasswordInput = findViewById(R.id.editTextPasswordInput);
+        layoutForgotPassword = findViewById(R.id.layoutForgotPassword);
+        layoutSignIn = findViewById(R.id.layoutSignIn);
+        layoutRegister = findViewById(R.id.layoutRegister);
+        mTextViewErrorEmail = findViewById(R.id.mTextViewErrorMobileNUmber);
+        mTextViewErrorPassword = findViewById(R.id.mTextViewErrorPassword);
+        linearLayoutClose = findViewById(R.id.linearLayoutClose);
+        frameLayoutLogin = findViewById(R.id.frameLayoutLogin);
+        frameLayoutRegister = findViewById(R.id.frameLayoutRegister);
+
+        //Register
+        editTextSignUpUserName = findViewById(R.id.editTextSignUpUserName);
+        editTextSignUpEmail = findViewById(R.id.editTextSignUpEmail);
+        editTextSignUpMobileNumber = findViewById(R.id.editTextSignUpMobileNumber);
+        mTextViewUserNameError = findViewById(R.id.mTextViewUserNameError);
+        mTextViewSignupEmailError = findViewById(R.id.mTextViewSignupEmailError);
+        mTextViewPasswordError = findViewById(R.id.mTextViewPasswordError);
+        mTextViewSignupMobileNumberError = findViewById(R.id.mTextViewSignupMobileNumberError);
+        editTextSignUpPassword = findViewById(R.id.editTextSignUpPassword);
+        layoutSignUp = findViewById(R.id.layoutSignUp);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        emailValidator = new EmailValidator();
+
+        layoutSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    hideKeyboard(view);
+                    firebaseLogin();
+                } catch (Exception exception) {
+                    Log.e("Error ==> ", "" + exception);
+                }
+            }
+        });
+
+        layoutRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    frameLayoutLogin.setVisibility(View.GONE);
+                    frameLayoutRegister.setVisibility(View.VISIBLE);
+                    linearLayoutClose.setVisibility(View.VISIBLE);
+                    invalidateErrorMessagesLogin();
+                } catch (Exception exception) {
+                    Log.e("Error ==> ", "" + exception);
+                }
+            }
+        });
+
+        linearLayoutClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    frameLayoutLogin.setVisibility(View.VISIBLE);
+                    frameLayoutRegister.setVisibility(View.GONE);
+                    linearLayoutClose.setVisibility(View.GONE);
+                    invalidateErrorMessagesRegister();
+
+                } catch (Exception exception) {
+                    Log.e("Error ==> ", "" + exception);
+                }
+            }
+        });
+
+        layoutSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    hideKeyboard(view);
+                    firebaseRegister();
+                } catch (Exception exception) {
+                    Log.e("Error ==> ", "" + exception);
+                }
+            }
+        });
+    }
+
+    public void firebaseLogin() {
+        try {
+            if (loginValidate(editTextEmailInput.getText().toString(), editTextPasswordInput.getText().toString())) {
+                firebaseAuth.signInWithEmailAndPassword(editTextEmailInput.getText().toString(), editTextPasswordInput.getText().toString())
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "Login Successfully", Toast.LENGTH_SHORT).show();
+                                    String userId = task.getResult().getUser().getUid();
+                                    Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("userId", String.valueOf(userId));
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        } catch (Exception exception) {
+            Log.e("Error ==> ", "" + exception);
+        }
+    }
+
+    public void firebaseRegister() {
+        try {
+            if (registerValidate(editTextSignUpUserName.getText().toString(), editTextSignUpMobileNumber.getText().toString(), editTextSignUpEmail.getText().toString(), editTextSignUpPassword.getText().toString())) {
+                firebaseAuth.createUserWithEmailAndPassword(editTextSignUpEmail.getText().toString(), editTextSignUpPassword.getText().toString())
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "Register Successfully", Toast.LENGTH_SHORT).show();
+                                    String userId = firebaseAuth.getCurrentUser().getUid();
+                                    storeUserInfo(userId, editTextSignUpUserName.getText().toString(), editTextSignUpEmail.getText().toString(), editTextSignUpMobileNumber.getText().toString());
+                                    Intent intent = new Intent(getApplicationContext(), ScanBarCodeActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        } catch (Exception exception) {
+            Log.e("Error ==> ", "" + exception);
+        }
+    }
+
+    private void storeUserInfo(String userId, String userName, String email, String mobileNumber) {
+        try {
+            HashMap<String, Object> addFieldInfo = new HashMap<>();
+            addFieldInfo.put("userId", "" + userId);
+            addFieldInfo.put("userName", "" + userName);
+            addFieldInfo.put("userEmailAddress", "" + email);
+            addFieldInfo.put("userMobileNumber", "" + mobileNumber);
+            DocumentReference databaseReference = firebaseFirestore.collection("Users").document(userId);
+            databaseReference.set(addFieldInfo);
+        } catch (Exception exception) {
+            Log.e("Error ==> ", "" + exception);
+        }
+    }
+
+    private void invalidateErrorMessagesLogin() {
+        try {
+            mTextViewErrorEmail.setText("");
+            mTextViewErrorPassword.setText("");
+            mTextViewErrorEmail.setVisibility(View.GONE);
+            mTextViewErrorPassword.setVisibility(View.GONE);
+            editTextEmailInput.setText("");
+            editTextPasswordInput.setText("");
+            editTextEmailInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+            editTextPasswordInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+        } catch (Exception exception) {
+            Log.e("Error ==> ", "" + exception);
+        }
+    }
+
+    private void invalidateErrorMessagesRegister() {
+        try {
+            mTextViewUserNameError.setText("");
+            mTextViewSignupMobileNumberError.setText("");
+            mTextViewSignupEmailError.setText("");
+            mTextViewPasswordError.setText("");
+            mTextViewUserNameError.setVisibility(View.GONE);
+            mTextViewSignupMobileNumberError.setVisibility(View.GONE);
+            mTextViewSignupEmailError.setVisibility(View.GONE);
+            mTextViewPasswordError.setVisibility(View.GONE);
+            editTextSignUpUserName.setText("");
+            editTextSignUpMobileNumber.setText("");
+            editTextSignUpEmail.setText("");
+            editTextSignUpPassword.setText("");
+            editTextSignUpUserName.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+            editTextSignUpMobileNumber.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+            editTextSignUpEmail.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+            editTextSignUpPassword.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+        } catch (Exception exception) {
+            Log.e("Error ==> ", "" + exception);
+        }
+    }
+
+    private void hideKeyboard(View v) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+    }
+
+    public boolean loginValidate(String strEmail, String password) {
+        boolean valid = true;
+        try {
+            if (strEmail.isEmpty()) {
+                editTextEmailInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
+                mTextViewErrorEmail.setVisibility(View.VISIBLE);
+                mTextViewErrorEmail.setText(getResources().getString(R.string.email_error));
+                valid = false;
+            }else if(!emailValidator.validate(strEmail)){
+                mTextViewErrorEmail.setVisibility(View.VISIBLE);
+                editTextEmailInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
+                mTextViewErrorEmail.setText(getResources().getString(R.string.email_invalid));
+                valid = false;
+            }
+            else {
+                editTextEmailInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+                mTextViewErrorEmail.setVisibility(View.GONE);
+            }
+//            if (!emailValidator.validate(strEmail)) {
+//                mTextViewErrorEmail.setVisibility(View.VISIBLE);
+//                editTextEmailInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
+//                mTextViewErrorEmail.setText(getResources().getString(R.string.email_invalid));
+//                valid = false;
+//            } else {
+//                mTextViewErrorEmail.setVisibility(View.GONE);
+//                editTextEmailInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+//            }
+            if (password.isEmpty()) {
+                editTextPasswordInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
+                mTextViewErrorPassword.setVisibility(View.VISIBLE);
+                mTextViewErrorPassword.setText(getResources().getString(R.string.password_error));
+                valid = false;
+            } else {
+                editTextPasswordInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+                mTextViewErrorPassword.setVisibility(View.GONE);
+            }
+        } catch (Exception exception) {
+            Log.e("Error ==> ", "" + exception);
+        }
+        return valid;
+    }
+
+    public boolean registerValidate(String strFirstName, String strMobible, String strEmail, String strPassword) {
+        boolean valid = true;
+        try {
+            if (strFirstName.isEmpty()) {
+                mTextViewUserNameError.setVisibility(View.VISIBLE);
+                editTextSignUpUserName.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
+                mTextViewUserNameError.setText(getResources().getString(R.string.error_username));
+                valid = false;
+            } else {
+                mTextViewUserNameError.setVisibility(View.GONE);
+                editTextSignUpUserName.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+            }
+            if (strMobible.isEmpty()) {
+                mTextViewSignupMobileNumberError.setVisibility(View.VISIBLE);
+                editTextSignUpMobileNumber.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
+                mTextViewSignupMobileNumberError.setText(getResources().getString(R.string.error_number));
+                valid = false;
+            } else {
+                mTextViewSignupMobileNumberError.setVisibility(View.GONE);
+                editTextSignUpMobileNumber.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+            }
+            if (strEmail.isEmpty()) {
+                mTextViewSignupEmailError.setVisibility(View.VISIBLE);
+                editTextSignUpEmail.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
+                mTextViewSignupEmailError.setText(getResources().getString(R.string.email_error));
+                valid = false;
+            } else {
+                mTextViewSignupEmailError.setVisibility(View.GONE);
+                editTextSignUpEmail.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+            }
+            if (!emailValidator.validate(strEmail)) {
+                mTextViewSignupEmailError.setVisibility(View.VISIBLE);
+                editTextSignUpEmail.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
+                mTextViewSignupEmailError.setText(getResources().getString(R.string.email_invalid));
+                valid = false;
+            } else {
+                mTextViewSignupEmailError.setVisibility(View.GONE);
+                editTextSignUpEmail.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+            }
+            if (strPassword.isEmpty()) {
+                mTextViewPasswordError.setVisibility(View.VISIBLE);
+                editTextSignUpPassword.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
+                mTextViewPasswordError.setText(getResources().getString(R.string.password_error));
+                valid = false;
+            } else {
+                mTextViewPasswordError.setVisibility(View.GONE);
+                editTextSignUpPassword.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
+            }
+        } catch (Exception exception) {
+            Log.e("Error ==> ", "" + exception);
+        }
+        return valid;
+    }
+
+}

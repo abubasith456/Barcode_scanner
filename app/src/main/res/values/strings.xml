@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Grootan</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Login -->
+    <string name="email_error">Please enter the email</string>
+    <string name="email_invalid">Please enter the valid email address</string>
+    <string name="password_error">Please enter the password</string>
+    <!-- Register -->
+    <string name="error_username">Please enter the username</string>
+    <string name="error_number">Please enter the mobile number</string>
+
+</resources>
