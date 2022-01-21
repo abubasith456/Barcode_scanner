@@ -22,8 +22,8 @@ public class WelcomeActivity extends AppIntro {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_welcome);
         firebaseAuth=FirebaseAuth.getInstance();
-        addSlide(AppIntroFragment.newInstance("Welcome", "Welcome you all", R.drawable.welcome, ContextCompat.getColor(getApplicationContext(), R.color.colorAccent)));
-        addSlide(AppIntroFragment.newInstance("Second page", "This is the Second Page Description", R.drawable.welcome2, ContextCompat.getColor(getApplicationContext(), R.color.colorAccent)));
+        addSlide(AppIntroFragment.newInstance("Welcome", "This application created by the Google firebase to authenticate the user logins.", R.drawable.firebase, ContextCompat.getColor(getApplicationContext(), R.color.colorAccent)));
+        addSlide(AppIntroFragment.newInstance("Scan QR", "Scan the QR code to find the result. And that scanned result value stored to firebase.", R.drawable.qr_code_scan, ContextCompat.getColor(getApplicationContext(), R.color.colorAccent)));
         addSlide(AppIntroFragment.newInstance("Third page", "This is the Third Page Description", R.drawable.come, ContextCompat.getColor(getApplicationContext(), R.color.colorAccent)));
     }
 

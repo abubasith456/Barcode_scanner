@@ -56,11 +56,9 @@ public class LoginActivity extends AppCompatActivity {
         //Register
         editTextSignUpUserName = findViewById(R.id.editTextSignUpUserName);
         editTextSignUpEmail = findViewById(R.id.editTextSignUpEmail);
-        editTextSignUpMobileNumber = findViewById(R.id.editTextSignUpMobileNumber);
         mTextViewUserNameError = findViewById(R.id.mTextViewUserNameError);
         mTextViewSignupEmailError = findViewById(R.id.mTextViewSignupEmailError);
         mTextViewPasswordError = findViewById(R.id.mTextViewPasswordError);
-        mTextViewSignupMobileNumberError = findViewById(R.id.mTextViewSignupMobileNumberError);
         editTextSignUpPassword = findViewById(R.id.editTextSignUpPassword);
         layoutSignUp = findViewById(R.id.layoutSignUp);
 
@@ -188,7 +186,6 @@ public class LoginActivity extends AppCompatActivity {
             addFieldInfo.put("userId", "" + userId);
             addFieldInfo.put("userName", "" + userName);
             addFieldInfo.put("userEmailAddress", "" + email);
-            addFieldInfo.put("userMobileNumber", "" + mobileNumber);
             DocumentReference databaseReference = firebaseFirestore.collection("Users").document(userId);
             databaseReference.set(addFieldInfo);
         } catch (Exception exception) {
@@ -257,15 +254,6 @@ public class LoginActivity extends AppCompatActivity {
                 editTextEmailInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
                 mTextViewErrorEmail.setVisibility(View.GONE);
             }
-//            if (!emailValidator.validate(strEmail)) {
-//                mTextViewErrorEmail.setVisibility(View.VISIBLE);
-//                editTextEmailInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
-//                mTextViewErrorEmail.setText(getResources().getString(R.string.email_invalid));
-//                valid = false;
-//            } else {
-//                mTextViewErrorEmail.setVisibility(View.GONE);
-//                editTextEmailInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
-//            }
             if (password.isEmpty()) {
                 editTextPasswordInput.setBackground(getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
                 mTextViewErrorPassword.setVisibility(View.VISIBLE);
