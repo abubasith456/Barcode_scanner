@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.grootan.utils.EmailValidator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -133,8 +135,14 @@ public class LoginActivity extends AppCompatActivity {
         spinnerLoggedUser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String item = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(getApplicationContext(), item, Toast.LENGTH_SHORT).show();
+
+                if (adapterView.getItemAtPosition(i).toString().equals("Select user")) {
+                    editTextEmailInput.setText("");
+                } else {
+                    String item = adapterView.getItemAtPosition(i).toString();
+                    editTextEmailInput.setText(item);
+                }
+
             }
 
             @Override
@@ -150,6 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            spinnerArrayList.add("Select user");
                             if (task.isSuccessful()) {
                                 for (DocumentSnapshot documentSnapshot : task.getResult()) {
                                     String data = documentSnapshot.getString("userEmailAddress");
