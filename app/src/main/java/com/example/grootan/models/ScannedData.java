@@ -15,6 +15,8 @@ public class ScannedData {
         this.scanned_data = scanned_data;
     }
 
+    //Encapsulation
+
     public String getId() {
         return id;
     }

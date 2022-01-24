@@ -2,6 +2,9 @@ package com.example.grootan;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,12 +20,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.grootan.databinding.ActivityLoginBinding;
 import com.example.grootan.utils.EmailValidator;
+import com.example.grootan.viewModel.LoginRegisterViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,10 +51,25 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<String> spinnerArrayList;
     ArrayAdapter<String> spinnerAdapter;
 
+    private ActivityLoginBinding activityLoginBinding;
+    private LoginRegisterViewModel loginRegisterViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+//        setContentView(R.layout.activity_login);
+//        loginRegisterViewModel=new LoginRegisterViewModel(this,activityLoginBinding);
+        loginRegisterViewModel = ViewModelProviders.of(this).get(LoginRegisterViewModel.class);
+        activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        activityLoginBinding.setLoginregisterViewModel(loginRegisterViewModel);
+        loginRegisterViewModel.getUserData().observe(this, new Observer<FirebaseUser>() {
+            @Override
+            public void onChanged(FirebaseUser firebaseUser) {
+                Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         editTextEmailInput = findViewById(R.id.editTextEmailInput);
         editTextPasswordInput = findViewById(R.id.editTextPasswordInput);
@@ -79,17 +100,17 @@ public class LoginActivity extends AppCompatActivity {
         spinnerLoggedUser.setAdapter(spinnerAdapter);
         loadUsers();
 
-        layoutSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    hideKeyboard(view);
-                    firebaseLogin();
-                } catch (Exception exception) {
-                    Log.e("Error ==> ", "" + exception);
-                }
-            }
-        });
+//        layoutSignIn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                try {
+//                    hideKeyboard(view);
+//                    firebaseLogin();
+//                } catch (Exception exception) {
+//                    Log.e("Error ==> ", "" + exception);
+//                }
+//            }
+//        });
 
         layoutRegister.setOnClickListener(new View.OnClickListener() {
             @Override
