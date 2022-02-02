@@ -21,15 +21,10 @@ public class LoginRegisterViewModel extends AndroidViewModel {
     public MutableLiveData<String> EmailRegister = new MutableLiveData<>();
     public MutableLiveData<String> PasswordRegister = new MutableLiveData<>();
     public MutableLiveData<String> NameRegister = new MutableLiveData<>();
-    //    private MutableLiveData<LoginModel> userLoginMutableLiveData;
-//    private MutableLiveData<RegisterModel> userRegisterMutableLiveData;
-    private ActivityLoginBinding activityLoginBinding;
-
     private AuthenticationRepository repository;
     private MutableLiveData<FirebaseUser> userLoginData;
     private MutableLiveData<Boolean> loggedStatus;
     private Application application;
-    private Object TextUtils;
 
     public MutableLiveData<FirebaseUser> getUserLoginData() {
         return userLoginData;
@@ -42,58 +37,19 @@ public class LoginRegisterViewModel extends AndroidViewModel {
     public LoginRegisterViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
-        repository = new AuthenticationRepository(application);
         userLoginData = repository.getFirebaseLoginUserMutableLiveData();
         loggedStatus = repository.getUserLoggedMutableLiveData();
     }
 
-//    public void register(String email , String pass){
-//        repository.register(email, pass);
-//    }
-//    public void signIn(String email , String pass){
-//        repository.login(email, pass);
-//    }
-//    public void signOut(){
-//        repository.signOut();
-//    }
-
-//    public MutableLiveData<LoginModel> getLoginUser() {
-//
-//        if (userLoginMutableLiveData == null) {
-//            userLoginMutableLiveData = new MutableLiveData<>();
-//
-//        }
-//        return userLoginMutableLiveData;
-//
-//    }
-//
-//    public MutableLiveData<RegisterModel> getRegisterUser() {
-//        if (userRegisterMutableLiveData == null) {
-//            userRegisterMutableLiveData = new MutableLiveData<>();
-//        }
-//        return userRegisterMutableLiveData;
-//    }
 
     public void onLoginClick(View view) {
         try {
-//            if (EmailLogin.getValue()==null) {
-//                Toast.makeText(application.getApplicationContext(), "Please Enter the email", Toast.LENGTH_SHORT).show();
-////                activityLoginBinding.mTextViewErrorMobileNUmber.setVisibility(View.VISIBLE);
-////                activityLoginBinding.mTextViewErrorMobileNUmber.setText("Please enter the email");
-//            } else if (PasswordLogin == null) {
-//                Toast.makeText(application.getApplicationContext(), "Please enter the password", Toast.LENGTH_SHORT).show();
-//            } else {
-//
-//                repository.login(EmailLogin.getValue(), PasswordLogin.getValue());
-//            }
             if (validateLogin(EmailLogin.getValue(), PasswordLogin.getValue())) {
                 repository.login(EmailLogin.getValue(), PasswordLogin.getValue());
-
             }
         } catch (Exception exception) {
             Log.e("Error ==> ", "" + exception);
         }
-
     }
 
     public void onRegisterClick(View view) {
@@ -106,14 +62,20 @@ public class LoginRegisterViewModel extends AndroidViewModel {
         }
     }
 
+//    public void onSignOut(View view) {
+//        try {
+//            repository.signOut();
+//        } catch (Exception exception) {
+//            Log.e("Error ==> ", "" + exception);
+//        }
+//    }
+
     public boolean validateLogin(String email, String password) {
         boolean valid = true;
         try {
             if (email == null) {
                 Toast.makeText(application.getApplicationContext(), "Please Enter the email", Toast.LENGTH_SHORT).show();
                 valid = false;
-//                activityLoginBinding.mTextViewErrorMobileNUmber.setVisibility(View.VISIBLE);
-//                activityLoginBinding.mTextViewErrorMobileNUmber.setText("Please enter the email");
             } else if (password == null) {
                 Toast.makeText(application.getApplicationContext(), "Please enter the password", Toast.LENGTH_SHORT).show();
                 valid = false;

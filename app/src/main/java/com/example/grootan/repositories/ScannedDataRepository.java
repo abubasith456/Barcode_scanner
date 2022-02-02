@@ -2,14 +2,18 @@ package com.example.grootan.repositories;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.grootan.DashboardActivity;
+import com.example.grootan.LoginRegisterActivity;
 import com.example.grootan.adapter.ScannedDataAdapter;
 import com.example.grootan.models.ScannedData;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +34,11 @@ public class ScannedDataRepository {
     private MutableLiveData<List<ScannedData>> mutableLiveData = new MutableLiveData<>();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private Application application;
+
+    public ScannedDataRepository(Application application) {
+        this.application = application;
+    }
 
     public MutableLiveData<List<ScannedData>> getMutableLiveData() {
         try {
@@ -62,5 +71,38 @@ public class ScannedDataRepository {
             Log.e("Error ==> ", "" + exception);
         }
         return mutableLiveData;
+    }
+
+    public void signOut() {
+        try {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(application.getApplicationContext());
+            builder1.setMessage("Are you sure.. do you want to logout?");
+            builder1.setCancelable(true);
+
+            builder1.setPositiveButton(
+                    "Yes",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            auth.signOut();
+                            Intent intent = new Intent(application.getApplicationContext(), LoginRegisterActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            application.startActivity(intent);
+                        }
+                    });
+
+            builder1.setNegativeButton(
+                    "No",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        } catch (Exception exception) {
+            Log.e("Error ==> ", "" + exception);
+        }
+//        userLoggedMutableLiveData.postValue(true);
     }
 }

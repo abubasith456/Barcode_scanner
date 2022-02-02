@@ -185,7 +185,6 @@ public class ScanBarCodeActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @Override

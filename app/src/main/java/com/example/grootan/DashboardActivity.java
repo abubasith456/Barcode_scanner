@@ -63,14 +63,14 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_dashboard);
         activityDashboardBinding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+        activityDashboardBinding.setLifecycleOwner(this);
+        activityDashboardBinding.setDashboardViewModel(dashboardViewModel);
         activityDashboardBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         activityDashboardBinding.recyclerView.setHasFixedSize(true);
         scannedDataAdapter = new ScannedDataAdapter();
         activityDashboardBinding.recyclerView.setAdapter(scannedDataAdapter);
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
-
         getScannedData();
-
 
         linear_layout_menu = findViewById(R.id.linear_layout_menu);
         sideMenu = findViewById(R.id.sideMenu);
@@ -106,42 +106,42 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        textViewLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    sideMenu.setVisibility(View.GONE);
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(DashboardActivity.this);
-                    builder1.setMessage("Are you sure.. do you want to logout?");
-                    builder1.setCancelable(true);
-
-                    builder1.setPositiveButton(
-                            "Yes",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    FirebaseAuth.getInstance().signOut();
-                                    Intent intent = new Intent(DashboardActivity.this, LoginRegisterActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            });
-
-                    builder1.setNegativeButton(
-                            "No",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-
-                    AlertDialog alert11 = builder1.create();
-                    alert11.show();
-                } catch (Exception exception) {
-                    Log.e("Error ==> ", "" + exception);
-                }
-            }
-        });
+//        textViewLogout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                try {
+//                    sideMenu.setVisibility(View.GONE);
+//                    AlertDialog.Builder builder1 = new AlertDialog.Builder(DashboardActivity.this);
+//                    builder1.setMessage("Are you sure.. do you want to logout?");
+//                    builder1.setCancelable(true);
+//
+//                    builder1.setPositiveButton(
+//                            "Yes",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    FirebaseAuth.getInstance().signOut();
+//                                    Intent intent = new Intent(DashboardActivity.this, LoginRegisterActivity.class);
+//                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                    startActivity(intent);
+//                                    finish();
+//                                }
+//                            });
+//
+//                    builder1.setNegativeButton(
+//                            "No",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+//
+//                    AlertDialog alert11 = builder1.create();
+//                    alert11.show();
+//                } catch (Exception exception) {
+//                    Log.e("Error ==> ", "" + exception);
+//                }
+//            }
+//        });
 
         floatingButtonOpenCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,7 +167,8 @@ public class DashboardActivity extends AppCompatActivity {
 
             @Override
             public void onChanged(List<ScannedData> scannedData) {
-                scannedDataAdapter.getScannedData((ArrayList<ScannedData>)scannedData);
+                scannedDataAdapter.getScannedData((ArrayList<ScannedData>) scannedData);
+
             }
         });
     }

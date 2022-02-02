@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
+<data>
+    <variable
+        name="dashboardViewModel"
+        type="com.example.grootan.viewModel.DashboardViewModel" />
+</data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -123,6 +127,7 @@
                         android:paddingStart="@dimen/_15sdp"
                         android:paddingEnd="@dimen/_15sdp"
                         android:text="Logout"
+                        android:onClick="@{(v)->dashboardViewModel.onSignOut(v)}"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/_16sdp" />
 

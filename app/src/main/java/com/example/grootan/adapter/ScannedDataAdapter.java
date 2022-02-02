@@ -21,6 +21,12 @@ import io.grpc.Context;
 
 public class ScannedDataAdapter extends RecyclerView.Adapter<ScannedDataAdapter.ScannedDataViewHolder> {
     private ArrayList<ScannedData> scannedDataArrayList;
+    private Context context;
+
+//    public ScannedDataAdapter(ArrayList<ScannedData> scannedDataArrayList) {
+//        this.scannedDataArrayList = scannedDataArrayList;
+//        this.context = context;
+//    }
 
     @NonNull
     @Override
@@ -28,6 +34,7 @@ public class ScannedDataAdapter extends RecyclerView.Adapter<ScannedDataAdapter.
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         RowItemViewDataBinding rowItemViewDataBinding = RowItemViewDataBinding.inflate(layoutInflater, parent, false);
         return new ScannedDataViewHolder(rowItemViewDataBinding);
+
     }
 
     @Override
@@ -48,6 +55,7 @@ public class ScannedDataAdapter extends RecyclerView.Adapter<ScannedDataAdapter.
     public void getScannedData(ArrayList<ScannedData> arrayList) {
         this.scannedDataArrayList = arrayList;
         notifyDataSetChanged();
+
     }
 
     public static class ScannedDataViewHolder extends RecyclerView.ViewHolder {

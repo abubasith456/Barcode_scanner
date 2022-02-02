@@ -2,6 +2,7 @@ package com.example.grootan.viewModel;
 
 import android.app.Application;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,9 +26,6 @@ import java.util.List;
 
 public class DashboardViewModel extends AndroidViewModel {
     private ScannedDataRepository scannedDataRepository;
-    MutableLiveData<ArrayList<ScannedData>> arrayListMutableLiveData;
-    private ArrayList<ScannedData> scannedDataArrayList;
-    MutableLiveData<ScannedData> scannedDataMutableLiveData;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth auth;
     private Application application;
@@ -36,12 +34,20 @@ public class DashboardViewModel extends AndroidViewModel {
     public DashboardViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
+        scannedDataRepository=new ScannedDataRepository(application);
         firebaseFirestore = FirebaseFirestore.getInstance();
-        scannedDataRepository=new ScannedDataRepository();
         auth = FirebaseAuth.getInstance();
     }
 
     public LiveData<List<ScannedData>> getScannedData() {
         return scannedDataRepository.getMutableLiveData();
+    }
+
+    public void onSignOut(View view) {
+        try {
+            scannedDataRepository.signOut();
+        } catch (Exception exception) {
+            Log.e("Error ==> ", "" + exception);
+        }
     }
 }
