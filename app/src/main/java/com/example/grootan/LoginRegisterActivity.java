@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginRegisterActivity extends AppCompatActivity {
 
     EditText editTextEmailInput, editTextPasswordInput, editTextSignUpUserName, editTextSignUpEmail, editTextSignUpPassword;
     TextView mTextViewErrorEmail, mTextViewErrorPassword, mTextViewUserNameError, mTextViewSignupEmailError, mTextViewSignupMobileNumberError, mTextViewPasswordError;
@@ -61,8 +61,9 @@ public class LoginActivity extends AppCompatActivity {
 //        loginRegisterViewModel=new LoginRegisterViewModel(this,activityLoginBinding);
         loginRegisterViewModel = ViewModelProviders.of(this).get(LoginRegisterViewModel.class);
         activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        activityLoginBinding.setLifecycleOwner(this);
         activityLoginBinding.setLoginregisterViewModel(loginRegisterViewModel);
-        loginRegisterViewModel.getUserData().observe(this, new Observer<FirebaseUser>() {
+        loginRegisterViewModel.getUserLoginData().observe(this, new Observer<FirebaseUser>() {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {
                 Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
@@ -70,9 +71,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
-        editTextEmailInput = findViewById(R.id.editTextEmailInput);
-        editTextPasswordInput = findViewById(R.id.editTextPasswordInput);
+//        editTextEmailInput = findViewById(R.id.editTextEmailInput);
+//        editTextPasswordInput = findViewById(R.id.editTextPasswordInput);
         layoutForgotPassword = findViewById(R.id.layoutForgotPassword);
         layoutSignIn = findViewById(R.id.layoutSignIn);
         layoutRegister = findViewById(R.id.layoutRegister);
@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         emailValidator = new EmailValidator();
         spinnerArrayList = new ArrayList<>();
-        spinnerAdapter = new ArrayAdapter<>(LoginActivity.this, android.R.layout.simple_spinner_dropdown_item, spinnerArrayList);
+        spinnerAdapter = new ArrayAdapter<>(LoginRegisterActivity.this, android.R.layout.simple_spinner_dropdown_item, spinnerArrayList);
         spinnerLoggedUser.setAdapter(spinnerAdapter);
         loadUsers();
 
@@ -141,24 +141,24 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        layoutSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    hideKeyboard(view);
-                    firebaseRegister();
-                } catch (Exception exception) {
-                    Log.e("Error ==> ", "" + exception);
-                }
-            }
-        });
+//        layoutSignUp.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                try {
+//                    hideKeyboard(view);
+//                    firebaseRegister();
+//                } catch (Exception exception) {
+//                    Log.e("Error ==> ", "" + exception);
+//                }
+//            }
+//        });
 
         spinnerLoggedUser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 if (adapterView.getItemAtPosition(i).toString().equals("Select user")) {
-                    editTextEmailInput.setText("");
+//                    editTextEmailInput.setText("");
                 } else {
                     String item = adapterView.getItemAtPosition(i).toString();
                     editTextEmailInput.setText(item);
@@ -210,7 +210,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(), "Login Successfully", Toast.LENGTH_SHORT).show();
                                     String userId = task.getResult().getUser().getUid();
-                                    Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                                    Intent intent = new Intent(LoginRegisterActivity.this, DashboardActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.putExtra("userId", String.valueOf(userId));
                                     startActivity(intent);

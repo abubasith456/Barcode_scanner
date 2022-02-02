@@ -10,7 +10,7 @@
         <entry key="app/src/main/res/drawable/icon_camera.xml" value="0.140625" />
         <entry key="app/src/main/res/drawable/icon_close.xml" value="0.1453125" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_scan_bar_code.xml" value="0.1503623188405797" />
         <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.24583333333333332" />

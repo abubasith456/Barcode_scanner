@@ -19,7 +19,7 @@
             android:name=".ScanBarCodeActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".LoginRegisterActivity"
             android:exported="false" />
         <activity
             android:name=".WelcomeActivity"

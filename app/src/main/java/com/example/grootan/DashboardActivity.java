@@ -3,16 +3,16 @@ package com.example.grootan;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.telecom.TelecomManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +22,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.grootan.adapter.ScannedDataAdapter;
+import com.example.grootan.databinding.ActivityDashboardBinding;
 import com.example.grootan.models.ScannedData;
+import com.example.grootan.viewModel.DashboardViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -37,37 +40,49 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class DashboardActivity extends AppCompatActivity {
 
     FrameLayout sideMenu;
     LinearLayout linear_layout_menu, sideMenuClose;
-    TextView textViewUserName,textViewLogout;
+    TextView textViewUserName, textViewLogout;
     RecyclerView recyclerView;
     ArrayList<ScannedData> scannedDataArrayList;
     FloatingActionButton floatingButtonOpenCamera;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    String timeStamp,QR_value;
+    String timeStamp, QR_value;
     ScannedDataAdapter scannedDataAdapter;
+    DashboardViewModel dashboardViewModel;
+    ActivityDashboardBinding activityDashboardBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+//        setContentView(R.layout.activity_dashboard);
+        activityDashboardBinding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+        activityDashboardBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        activityDashboardBinding.recyclerView.setHasFixedSize(true);
+        scannedDataAdapter = new ScannedDataAdapter();
+        activityDashboardBinding.recyclerView.setAdapter(scannedDataAdapter);
+        dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
+
+        getScannedData();
+
 
         linear_layout_menu = findViewById(R.id.linear_layout_menu);
         sideMenu = findViewById(R.id.sideMenu);
         sideMenuClose = findViewById(R.id.sideMenuClose);
-        textViewUserName=findViewById(R.id.textViewUserName);
+        textViewUserName = findViewById(R.id.textViewUserName);
         textViewLogout = findViewById(R.id.textViewLogout);
         recyclerView = findViewById(R.id.recyclerView);
         floatingButtonOpenCamera = findViewById(R.id.floatingButtonOpenCamera);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         timeStamp = "" + System.currentTimeMillis();
-        QR_value=getIntent().getStringExtra("QR_value");
+        QR_value = getIntent().getStringExtra("QR_value");
         loadUserInfo();
         linear_layout_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +120,7 @@ public class DashboardActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     FirebaseAuth.getInstance().signOut();
-                                    Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+                                    Intent intent = new Intent(DashboardActivity.this, LoginRegisterActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
                                     finish();
@@ -142,6 +157,17 @@ public class DashboardActivity extends AppCompatActivity {
                 } catch (Exception exception) {
                     Log.e("Error ==> ", "" + exception);
                 }
+            }
+        });
+    }
+
+    private void getScannedData() {
+        dashboardViewModel.getScannedData().observe(this, new Observer<List<ScannedData>>() {
+            private Object ArrayList;
+
+            @Override
+            public void onChanged(List<ScannedData> scannedData) {
+                scannedDataAdapter.getScannedData((ArrayList<ScannedData>)scannedData);
             }
         });
     }
@@ -243,11 +269,11 @@ public class DashboardActivity extends AppCompatActivity {
                                             documentSnapshot.getString("uploadedData"));
                                     scannedDataArrayList.add(data);
                                 }
-                                scannedDataAdapter = new ScannedDataAdapter(scannedDataArrayList, getApplicationContext());
-                                LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-                                recyclerView.setLayoutManager(mLayoutManager);
-                                recyclerView.setAdapter(scannedDataAdapter);
-                                scannedDataAdapter.notifyDataSetChanged();
+//                                scannedDataAdapter = new ScannedDataAdapter(scannedDataArrayList, getApplicationContext());
+//                                LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+//                                recyclerView.setLayoutManager(mLayoutManager);
+//                                recyclerView.setAdapter(scannedDataAdapter);
+//                                scannedDataAdapter.notifyDataSetChanged();
                             }
 
 
@@ -277,69 +303,69 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    public class ScannedDataAdapter extends RecyclerView.Adapter<ScannedDataViewHolder> {
-        private ArrayList<ScannedData> scannedDataArrayList;
-        private Context context;
+//    public static class ScannedDataAdapter extends RecyclerView.Adapter<ScannedDataViewHolder> {
+//        private ArrayList<ScannedData> scannedDataArrayList;
+//        private Context context;
+//
+//        public ScannedDataAdapter(ArrayList<ScannedData> scannedDataArrayList, Context context) {
+//            this.scannedDataArrayList = scannedDataArrayList;
+//            context = context;
+//        }
+//
+//        public void setBookMarksList(ArrayList<ScannedData> scannedDataArrayList) {
+//            this.scannedDataArrayList = scannedDataArrayList;
+//            notifyDataSetChanged();
+//        }
+//
+//        @NonNull
+//        @Override
+//        public ScannedDataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//            return new ScannedDataViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_view_data, parent, false));
+//        }
+//
+//        @Override
+//        public void onBindViewHolder(@NonNull ScannedDataViewHolder holder, int position) {
+//            holder.bind(scannedDataArrayList.get(position), context);
+//        }
+//
+//        @Override
+//        public int getItemCount() {
+//            return scannedDataArrayList.size();
+//        }
+//    }
 
-        public ScannedDataAdapter(ArrayList<ScannedData> scannedDataArrayList, Context context) {
-            this.scannedDataArrayList = scannedDataArrayList;
-            context = context;
-        }
-
-        public void setBookMarksList(ArrayList<ScannedData> scannedDataArrayList) {
-            this.scannedDataArrayList = scannedDataArrayList;
-            notifyDataSetChanged();
-        }
-
-        @NonNull
-        @Override
-        public ScannedDataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ScannedDataViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_view_data, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ScannedDataViewHolder holder, int position) {
-            holder.bind(scannedDataArrayList.get(position), context);
-        }
-
-        @Override
-        public int getItemCount() {
-            return scannedDataArrayList.size();
-        }
-    }
-
-    public class ScannedDataViewHolder extends RecyclerView.ViewHolder {
-
-        TextView textViewScannedData, textViewDate, textViewTime;
-
-        ScannedDataViewHolder(View itemView) {
-            super(itemView);
-            try {
-
-                textViewScannedData = itemView.findViewById(R.id.textViewScannedData);
-                textViewDate = itemView.findViewById(R.id.textViewDate);
-                textViewTime = itemView.findViewById(R.id.textViewTime);
-
-            } catch (Exception exception) {
-                Log.e("Error ==> ", "" + exception);
-            }
-        }
-
-        public void bind(final ScannedData response, final Context context) {
-            try {
-                if (response != null) {
-
-                    textViewScannedData.setText(response.getScanned_data());
-                    textViewDate.setText(response.getDate());
-                    textViewTime.setText(response.getTime());
-
-                }
-
-            } catch (Exception exception) {
-                Log.e("Error ==> ", "" + exception);
-            }
-        }
-
-    }
+//    public static class ScannedDataViewHolder extends RecyclerView.ViewHolder {
+//
+//        TextView textViewScannedData, textViewDate, textViewTime;
+//
+//        public ScannedDataViewHolder(View itemView) {
+//            super(itemView);
+//            try {
+//
+//                textViewScannedData = itemView.findViewById(R.id.textViewScannedData);
+//                textViewDate = itemView.findViewById(R.id.textViewDate);
+//                textViewTime = itemView.findViewById(R.id.textViewTime);
+//
+//            } catch (Exception exception) {
+//                Log.e("Error ==> ", "" + exception);
+//            }
+//        }
+//
+//        public void bind(final ScannedData response, final Context context) {
+//            try {
+//                if (response != null) {
+//
+//                    textViewScannedData.setText(response.getScanned_data());
+//                    textViewDate.setText(response.getDate());
+//                    textViewTime.setText(response.getTime());
+//
+//                }
+//
+//            } catch (Exception exception) {
+//                Log.e("Error ==> ", "" + exception);
+//            }
+//        }
+//
+//    }
 
 }

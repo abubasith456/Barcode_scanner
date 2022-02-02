@@ -85,10 +85,10 @@
                     android:elevation="@dimen/_5sdp"
                     android:fontFamily="@font/work_sans_medium"
                     android:hint="Enter the email"
-                    android:text="@={loginregisterViewModel.EmailLogin}"
                     android:inputType="textEmailAddress"
                     android:padding="@dimen/_10sdp"
                     android:singleLine="true"
+                    android:text="@={loginregisterViewModel.EmailLogin}"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_12sdp"
                     tools:ignore="Autofill"
@@ -129,10 +129,10 @@
                     android:elevation="@dimen/_5sdp"
                     android:fontFamily="@font/work_sans_medium"
                     android:hint="Enter the password"
-                    android:text="@={loginregisterViewModel.PasswordLogin}"
                     android:inputType="textPassword"
                     android:padding="@dimen/_10sdp"
                     android:singleLine="true"
+                    android:text="@={loginregisterViewModel.PasswordLogin}"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_12sdp"
                     tools:targetApi="lollipop" />
@@ -182,9 +182,9 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_20sdp"
-                    android:onClick="@{(v)->loginregisterViewModel.onLoginClick(v)}"
                     android:background="@drawable/background_corner_radius_white"
                     android:gravity="center"
+                    android:onClick="@{(v)->loginregisterViewModel.onLoginClick(v)}"
                     android:padding="@dimen/_8sdp">
 
                     <TextView
@@ -286,6 +286,7 @@
                                 android:inputType="textPersonName"
                                 android:padding="@dimen/_10sdp"
                                 android:singleLine="true"
+                                android:text="@={loginregisterViewModel.NameRegister}"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="@dimen/_12sdp"
                                 tools:ignore="Autofill"
@@ -325,6 +326,7 @@
                                 android:inputType="textEmailAddress"
                                 android:padding="@dimen/_10sdp"
                                 android:singleLine="true"
+                                android:text="@={loginregisterViewModel.EmailRegister}"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="@dimen/_12sdp"
                                 tools:ignore="Autofill"
@@ -366,6 +368,7 @@
                                 android:inputType="textPassword"
                                 android:padding="@dimen/_10sdp"
                                 android:singleLine="true"
+                                android:text="@={loginregisterViewModel.PasswordRegister}"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="@dimen/_12sdp"
                                 tools:ignore="Autofill"
@@ -390,6 +393,7 @@
                                 android:layout_marginBottom="@dimen/_20sdp"
                                 android:background="@drawable/background_corner_radius_white"
                                 android:gravity="center"
+                                android:onClick="@{(v)->loginregisterViewModel.onRegisterClick(v)}"
                                 android:padding="@dimen/_8sdp">
 
                                 <TextView
