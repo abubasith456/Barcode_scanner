@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -91,11 +91,12 @@
                     android:text="@={loginregisterViewModel.EmailLogin}"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_12sdp"
+                    app:error="@{loginregisterViewModel.EmailError}"
                     tools:ignore="Autofill"
                     tools:targetApi="lollipop" />
 
                 <TextView
-                    android:id="@+id/mTextViewErrorMobileNUmber"
+                    android:id="@+id/mTextViewLoginErrorEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
@@ -135,10 +136,11 @@
                     android:text="@={loginregisterViewModel.PasswordLogin}"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_12sdp"
+                    app:error="@{loginregisterViewModel.PasswordError}"
                     tools:targetApi="lollipop" />
 
                 <TextView
-                    android:id="@+id/mTextViewErrorPassword"
+                    android:id="@+id/mTextViewLoginErrorPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
@@ -289,6 +291,7 @@
                                 android:text="@={loginregisterViewModel.NameRegister}"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="@dimen/_12sdp"
+                                app:error="@{loginregisterViewModel.NameRegisterError}"
                                 tools:ignore="Autofill"
                                 tools:targetApi="lollipop" />
 
@@ -329,6 +332,7 @@
                                 android:text="@={loginregisterViewModel.EmailRegister}"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="@dimen/_12sdp"
+                                app:error="@{loginregisterViewModel.EmailRegisterError}"
                                 tools:ignore="Autofill"
                                 tools:targetApi="lollipop" />
 
@@ -371,6 +375,7 @@
                                 android:text="@={loginregisterViewModel.PasswordRegister}"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="@dimen/_12sdp"
+                                app:error="@{loginregisterViewModel.PasswordRegisterError}"
                                 tools:ignore="Autofill"
                                 tools:targetApi="lollipop" />
 

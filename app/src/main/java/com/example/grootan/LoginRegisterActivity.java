@@ -60,9 +60,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_login);
 //        loginRegisterViewModel=new LoginRegisterViewModel(this,activityLoginBinding);
         loginRegisterViewModel = ViewModelProviders.of(this).get(LoginRegisterViewModel.class);
+
         activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         activityLoginBinding.setLifecycleOwner(this);
         activityLoginBinding.setLoginregisterViewModel(loginRegisterViewModel);
+        loginRegisterViewModel.getBinding(activityLoginBinding);
         loginRegisterViewModel.getUserLoginData().observe(this, new Observer<FirebaseUser>() {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {
@@ -81,8 +83,8 @@ public class LoginRegisterActivity extends AppCompatActivity {
         layoutForgotPassword = findViewById(R.id.layoutForgotPassword);
         layoutSignIn = findViewById(R.id.layoutSignIn);
         layoutRegister = findViewById(R.id.layoutRegister);
-        mTextViewErrorEmail = findViewById(R.id.mTextViewErrorMobileNUmber);
-        mTextViewErrorPassword = findViewById(R.id.mTextViewErrorPassword);
+//        mTextViewErrorEmail = findViewById(R.id.mTextViewErrorMobileNUmber);
+//        mTextViewErrorPassword = findViewById(R.id.mTextViewErrorPassword);
         linearLayoutClose = findViewById(R.id.linearLayoutClose);
         frameLayoutLogin = findViewById(R.id.frameLayoutLogin);
         frameLayoutRegister = findViewById(R.id.frameLayoutRegister);
