@@ -37,6 +37,7 @@ public class LoginRegisterViewModel extends AndroidViewModel {
     public LoginRegisterViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
+        repository=new AuthenticationRepository(application);
         userLoginData = repository.getFirebaseLoginUserMutableLiveData();
         loggedStatus = repository.getUserLoggedMutableLiveData();
     }

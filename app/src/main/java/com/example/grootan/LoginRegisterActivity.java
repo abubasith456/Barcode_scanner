@@ -66,8 +66,13 @@ public class LoginRegisterActivity extends AppCompatActivity {
         loginRegisterViewModel.getUserLoginData().observe(this, new Observer<FirebaseUser>() {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {
-                Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-                startActivity(intent);
+                if (firebaseUser!=null){
+                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                    startActivity(intent);
+                }else {
+
+                }
+
             }
         });
 

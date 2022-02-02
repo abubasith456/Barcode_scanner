@@ -30,7 +30,11 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.example.grootan.databinding.ActivityDashboardBinding;
+import com.example.grootan.viewModel.ScanBarcodeViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -64,6 +68,8 @@ public class ScanBarCodeActivity extends AppCompatActivity {
     private MyImageAnalyzer analyzer;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
+    private ActivityDashboardBinding activityDashboardBinding;
+    private ScanBarcodeViewModel scanBarcodeViewModel;
     FrameLayout sideMenu;
     LinearLayout linear_layout_back, sideMenuClose;
     ImageView appCompatImageView;
@@ -74,6 +80,9 @@ public class ScanBarCodeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_bar_code);
+
+        activityDashboardBinding = DataBindingUtil.setContentView(this, R.layout.activity_scan_bar_code);
+        scanBarcodeViewModel = ViewModelProviders.of(this).get(ScanBarcodeViewModel.class);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -270,8 +279,9 @@ public class ScanBarCodeActivity extends AppCompatActivity {
                 imageAnalysis.setAnalyzer(null, null);
                 imageAnalysis = null;
                 String rawValue = barcode.getRawValue();
+                scanBarcodeViewModel.getScannedData(rawValue);
                 Toast.makeText(getApplicationContext(), rawValue, Toast.LENGTH_SHORT).show();
-                uploadDataToFirebase(rawValue);
+//                uploadDataToFirebase(rawValue);
                 Intent backIntent = new Intent(getApplicationContext(), DashboardActivity.class);
                 backIntent.putExtra("QR_value", rawValue);
                 startActivity(backIntent);

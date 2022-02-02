@@ -106,42 +106,42 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-//        textViewLogout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                try {
-//                    sideMenu.setVisibility(View.GONE);
-//                    AlertDialog.Builder builder1 = new AlertDialog.Builder(DashboardActivity.this);
-//                    builder1.setMessage("Are you sure.. do you want to logout?");
-//                    builder1.setCancelable(true);
-//
-//                    builder1.setPositiveButton(
-//                            "Yes",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    FirebaseAuth.getInstance().signOut();
-//                                    Intent intent = new Intent(DashboardActivity.this, LoginRegisterActivity.class);
-//                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                    startActivity(intent);
-//                                    finish();
-//                                }
-//                            });
-//
-//                    builder1.setNegativeButton(
-//                            "No",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    dialog.cancel();
-//                                }
-//                            });
-//
-//                    AlertDialog alert11 = builder1.create();
-//                    alert11.show();
-//                } catch (Exception exception) {
-//                    Log.e("Error ==> ", "" + exception);
-//                }
-//            }
-//        });
+        textViewLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    sideMenu.setVisibility(View.GONE);
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(DashboardActivity.this);
+                    builder1.setMessage("Are you sure.. do you want to logout?");
+                    builder1.setCancelable(true);
+
+                    builder1.setPositiveButton(
+                            "Yes",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    FirebaseAuth.getInstance().signOut();
+                                    Intent intent = new Intent(DashboardActivity.this, LoginRegisterActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+
+                    builder1.setNegativeButton(
+                            "No",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                } catch (Exception exception) {
+                    Log.e("Error ==> ", "" + exception);
+                }
+            }
+        });
 
         floatingButtonOpenCamera.setOnClickListener(new View.OnClickListener() {
             @Override
