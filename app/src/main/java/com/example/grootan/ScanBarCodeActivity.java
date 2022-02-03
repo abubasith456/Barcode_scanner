@@ -96,7 +96,7 @@ public class ScanBarCodeActivity extends AppCompatActivity {
         appCompatImageView = findViewById(R.id.imageviewBack);
         indicate = getIntent().getStringExtra("indicate");
 
-        scanBarcodeViewModel.imageViewChange(activityScanBarCodeBinding,indicate);
+        scanBarcodeViewModel.imageViewChange(this,activityScanBarCodeBinding,indicate);
 
         this.getWindow().setFlags(1024, 1024);
         cameraExecutor = Executors.newSingleThreadExecutor();

@@ -35,6 +35,7 @@ public class ScanBarcodeViewModel extends AndroidViewModel {
     public BarCodeRepository barCodeRepository;
     public String scannedData;
     private ActivityScanBarCodeBinding activityScanBarCodeBinding;
+    private ScanBarCodeActivity scanBarCodeActivity;
 
     public ScanBarcodeViewModel(@NonNull Application application) {
         super(application);
@@ -46,17 +47,20 @@ public class ScanBarcodeViewModel extends AndroidViewModel {
         this.scannedData = scannedData;
         if (scannedData != null) {
             barCodeRepository.uploadDataToFirebase(scannedData);
-            Intent backIntent = new Intent(application.getApplicationContext(), DashboardActivity.class);
-            backIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            backIntent.putExtra("QR_value", scannedData);
-            application.startActivity(backIntent);
+//            Intent backIntent = new Intent(application.getApplicationContext(), DashboardActivity.class);
+//            backIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            backIntent.putExtra("QR_value", scannedData);
+//            application.startActivity(backIntent);
 //            ((Activity) application.getApplicationContext()).overridePendingTransition(R.anim.slide_in_left,
 //                    R.anim.slide_out_right);
+            scanBarCodeActivity.finish();
+
         }
     }
 
-    public void imageViewChange(ActivityScanBarCodeBinding activityScanBarCodeBinding, String indicate) {
+    public void imageViewChange(ScanBarCodeActivity scanBarCodeActivity, ActivityScanBarCodeBinding activityScanBarCodeBinding, String indicate) {
         this.activityScanBarCodeBinding = activityScanBarCodeBinding;
+        this.scanBarCodeActivity = scanBarCodeActivity;
         try {
             if (indicate.equals("new")) {
                 activityScanBarCodeBinding.frameLayoutBack.setVisibility(View.GONE);
@@ -79,9 +83,7 @@ public class ScanBarcodeViewModel extends AndroidViewModel {
     }
 
     public void backIntent(View view) {
-        Intent backIntent = new Intent(application.getApplicationContext(), DashboardActivity.class);
-        backIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        application.startActivity(backIntent);
+        scanBarCodeActivity.finish();
     }
 
     public MutableLiveData<ScannedData> getScannedDataMutableLiveData() {
