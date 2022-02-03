@@ -3,12 +3,14 @@ package com.example.grootan.repositories;
 import android.app.Application;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.grootan.LoginRegisterActivity;
 import com.example.grootan.models.ScannedDataModel;
+import com.example.grootan.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -23,13 +25,16 @@ import java.util.List;
 public class ScannedDataRepository {
     private static final String TAG = "Scanned Repository";
     private ArrayList<ScannedDataModel> scannedDataModelArrayList = new ArrayList<>();
+    private MutableLiveData<UserModel> userModelMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<List<ScannedDataModel>> mutableLiveData = new MutableLiveData<>();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private Application application;
+    private UserModel userModel;
 
     public ScannedDataRepository(Application application) {
         this.application = application;
+        userModel = new UserModel();
     }
 
     public MutableLiveData<List<ScannedDataModel>> getMutableLiveData() {
