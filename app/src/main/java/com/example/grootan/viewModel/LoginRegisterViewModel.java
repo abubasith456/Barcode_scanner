@@ -40,6 +40,11 @@ public class LoginRegisterViewModel extends AndroidViewModel {
         return onClickResult;
     }
 
+    public MutableLiveData<Boolean> onClickShow(View view) {
+        onClickResult.setValue(true);
+        return onClickResult;
+    }
+
     public void getBinding(ActivityLoginBinding activityLoginBinding) {
         this.activityLoginBinding = activityLoginBinding;
     }

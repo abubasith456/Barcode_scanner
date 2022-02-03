@@ -44,17 +44,6 @@ import java.util.HashMap;
 
 public class LoginRegisterActivity extends AppCompatActivity {
 
-//    EditText editTextEmailInput, editTextPasswordInput, editTextSignUpUserName, editTextSignUpEmail, editTextSignUpPassword;
-//    TextView mTextViewErrorEmail, mTextViewErrorPassword, mTextViewUserNameError, mTextViewSignupEmailError, mTextViewSignupMobileNumberError, mTextViewPasswordError;
-//    LinearLayout layoutForgotPassword, layoutSignIn, layoutRegister, linearLayoutClose, layoutSignUp;
-//    FrameLayout frameLayoutLogin, frameLayoutRegister;
-//    FirebaseAuth firebaseAuth;
-//    FirebaseFirestore firebaseFirestore;
-//    EmailValidator emailValidator;
-////    Spinner spinnerLoggedUser;
-////    ArrayList<String> spinnerArrayList;
-//    ArrayAdapter<String> spinnerAdapter;
-
     private ActivityLoginBinding activityLoginBinding;
     private LoginRegisterViewModel loginRegisterViewModel;
     private CustomDialog customDialog;
@@ -80,8 +69,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
                     } catch (Exception exception) {
                         Log.e("Error ==> ", "" + exception);
                     }
-
-
                 }
             }
         });

@@ -1,20 +1,28 @@
 package com.example.grootan;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.grootan.adapter.ScannedDataAdapter;
 import com.example.grootan.databinding.ActivityDashboardBinding;
 import com.example.grootan.models.ScannedDataModel;
 import com.example.grootan.models.UserModel;
 import com.example.grootan.viewModel.DashboardViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -26,6 +34,7 @@ public class DashboardActivity extends AppCompatActivity {
     private DashboardViewModel dashboardViewModel;
     private ActivityDashboardBinding activityDashboardBinding;
     private UserModel userModel;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,16 @@ public class DashboardActivity extends AppCompatActivity {
         activityDashboardBinding.recyclerView.setAdapter(scannedDataAdapter);
         dashboardViewModel.passBinding(activityDashboardBinding);
         getScannedData();
+        getUserData();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void getScannedData() {
@@ -54,6 +73,19 @@ public class DashboardActivity extends AppCompatActivity {
             public void onChanged(List<ScannedDataModel> scannedDatumModels) {
                 scannedDataAdapter.getScannedData((ArrayList<ScannedDataModel>) scannedDatumModels);
 
+            }
+        });
+    }
+
+    private void getUserData() {
+        dashboardViewModel.getCurrentUser().observe(this, new Observer<UserModel>() {
+            @Override
+            public void onChanged(UserModel userModel) {
+                if (userModel.getUsername() != null) {
+                    activityDashboardBinding.textViewUserName.setText("Hi.." + userModel.getUsername());
+                } else {
+                    activityDashboardBinding.textViewUserName.setText("Hi... Grootan user");
+                }
             }
         });
     }

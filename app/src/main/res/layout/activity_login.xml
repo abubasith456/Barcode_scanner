@@ -62,11 +62,11 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_20sdp" />
 
-<!--                <Spinner-->
-<!--                    android:id="@+id/spinnerLoggedUser"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginBottom="@dimen/_15sdp" />-->
+                <!--                <Spinner-->
+                <!--                    android:id="@+id/spinnerLoggedUser"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginBottom="@dimen/_15sdp" />-->
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -215,6 +215,7 @@
                     android:layout_marginBottom="@dimen/_20sdp"
                     android:background="@drawable/background_corner_radius_white"
                     android:gravity="center"
+                    android:onClick="@{(v)->loginregisterViewModel.onClickShow(v)}"
                     android:orientation="horizontal"
                     android:padding="@dimen/_8sdp">
 

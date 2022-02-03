@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -13,9 +14,14 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.grootan.ScanBarCodeActivity;
 import com.example.grootan.databinding.ActivityDashboardBinding;
 import com.example.grootan.models.ScannedDataModel;
+import com.example.grootan.models.UserModel;
 import com.example.grootan.repositories.AuthenticationRepository;
 import com.example.grootan.repositories.ScannedDataRepository;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -36,11 +42,14 @@ public class DashboardViewModel extends AndroidViewModel {
         scannedDataRepository = new ScannedDataRepository(application);
         firebaseFirestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
-//        loadUserDetails();
     }
 
     public LiveData<List<ScannedDataModel>> getScannedData() {
         return scannedDataRepository.getMutableLiveData();
+    }
+
+    public MutableLiveData<UserModel> getCurrentUser(){
+        return scannedDataRepository.getUserModelMutableLiveData();
     }
 
     public void passBinding(ActivityDashboardBinding activityDashboardBinding) {
