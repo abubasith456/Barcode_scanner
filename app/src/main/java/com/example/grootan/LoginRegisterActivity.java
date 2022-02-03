@@ -71,8 +71,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 if (firebaseUser != null) {
                     Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                     startActivity(intent);
-                } else {
-
                 }
             }
         });
