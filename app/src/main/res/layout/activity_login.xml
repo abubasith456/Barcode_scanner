@@ -62,12 +62,6 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_20sdp" />
 
-                <!--                <Spinner-->
-                <!--                    android:id="@+id/spinnerLoggedUser"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginBottom="@dimen/_15sdp" />-->
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_37sdp"
@@ -232,6 +226,8 @@
             </LinearLayout>
         </FrameLayout>
 
+        <!-- Register Page -->
+
         <FrameLayout
             android:id="@+id/frameLayoutRegister"
             android:layout_width="match_parent"
@@ -241,187 +237,177 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
                 android:padding="@dimen/_20sdp">
 
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:fontFamily="@font/work_sans_semibold"
+                    android:text="Register"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_20sdp" />
 
-                    <LinearLayout
+                <TextView
+                    android:id="@+id/tv_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_22sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/work_sans_semibold"
+                    android:gravity="center"
+                    android:text="Username"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_12sdp" />
+
+                <EditText
+                    android:id="@+id/editTextSignUpUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_36sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:background="@drawable/background_rounded_edit_text_gray"
+                    android:elevation="@dimen/_5sdp"
+                    android:fontFamily="@font/work_sans_semibold"
+                    android:hint="Enter the username"
+                    android:inputType="textPersonName"
+                    android:padding="@dimen/_10sdp"
+                    android:singleLine="true"
+                    android:text="@={loginregisterViewModel.NameRegister}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    app:error="@{loginregisterViewModel.NameRegisterError}"
+                    tools:ignore="Autofill"
+                    tools:targetApi="lollipop" />
+
+                <TextView
+                    android:id="@+id/mTextViewUserNameError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/work_sans_semibold"
+                    android:textColor="@color/colorRed"
+                    android:textSize="@dimen/_10sdp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_email_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_22sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/work_sans_semibold"
+                    android:gravity="center"
+                    android:text="Email address"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_12sdp" />
+
+                <EditText
+                    android:id="@+id/editTextSignUpEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_36sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:background="@drawable/background_rounded_edit_text_gray"
+                    android:elevation="@dimen/_5sdp"
+                    android:fontFamily="@font/work_sans_semibold"
+                    android:hint="Enter the email address"
+                    android:inputType="textEmailAddress"
+                    android:padding="@dimen/_10sdp"
+                    android:singleLine="true"
+                    android:text="@={loginregisterViewModel.EmailRegister}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    app:error="@{loginregisterViewModel.EmailRegisterError}"
+                    tools:ignore="Autofill"
+                    tools:targetApi="lollipop" />
+
+                <TextView
+                    android:id="@+id/mTextViewSignupEmailError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/work_sans_semibold"
+                    android:textColor="@color/colorRed"
+                    android:textSize="@dimen/_10sdp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_22sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/work_sans_semibold"
+                    android:gravity="center"
+                    android:text="Password"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_12sdp" />
+
+                <EditText
+                    android:id="@+id/editTextSignUpPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_36sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:background="@drawable/background_rounded_edit_text_gray"
+                    android:elevation="@dimen/_5sdp"
+                    android:fontFamily="@font/work_sans_semibold"
+                    android:hint="Enter the password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:padding="@dimen/_10sdp"
+                    android:singleLine="true"
+                    android:text="@={loginregisterViewModel.PasswordRegister}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    app:error="@{loginregisterViewModel.PasswordRegisterError}"
+                    tools:ignore="Autofill"
+                    tools:targetApi="lollipop" />
+
+                <TextView
+                    android:id="@+id/mTextViewPasswordError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/work_sans_semibold"
+                    android:textColor="@color/colorRed"
+                    android:textSize="@dimen/_10sdp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/layoutSignUp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:background="@drawable/background_corner_radius_white"
+                    android:gravity="center"
+                    android:onClick="@{(v)->loginregisterViewModel.onRegisterClick(v)}"
+                    android:padding="@dimen/_8sdp">
+
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
+                        android:fontFamily="@font/work_sans_semibold"
+                        android:text="Sign-up"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_16sdp" />
+                </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginBottom="@dimen/_15sdp"
-                            android:fontFamily="@font/work_sans_semibold"
-                            android:text="Register"
-                            android:textAllCaps="false"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/_20sdp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tv_user_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/_22sdp"
-                                android:layout_marginTop="@dimen/_5sdp"
-                                android:fontFamily="@font/work_sans_semibold"
-                                android:gravity="center"
-                                android:text="Username"
-                                android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_12sdp" />
-
-                            <EditText
-                                android:id="@+id/editTextSignUpUserName"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_36sdp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/background_rounded_edit_text_gray"
-                                android:elevation="@dimen/_5sdp"
-                                android:fontFamily="@font/work_sans_semibold"
-                                android:hint="Enter the username"
-                                android:inputType="textPersonName"
-                                android:padding="@dimen/_10sdp"
-                                android:singleLine="true"
-                                android:text="@={loginregisterViewModel.NameRegister}"
-                                android:textColor="@color/colorBlack"
-                                android:textSize="@dimen/_12sdp"
-                                app:error="@{loginregisterViewModel.NameRegisterError}"
-                                tools:ignore="Autofill"
-                                tools:targetApi="lollipop" />
-
-                            <TextView
-                                android:id="@+id/mTextViewUserNameError"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:fontFamily="@font/work_sans_semibold"
-                                android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp"
-                                android:visibility="gone" />
-
-                            <TextView
-                                android:id="@+id/tv_email_address"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/_22sdp"
-                                android:layout_marginTop="@dimen/_5sdp"
-                                android:fontFamily="@font/work_sans_semibold"
-                                android:gravity="center"
-                                android:text="Email address"
-                                android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_12sdp" />
-
-                            <EditText
-                                android:id="@+id/editTextSignUpEmail"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_36sdp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/background_rounded_edit_text_gray"
-                                android:elevation="@dimen/_5sdp"
-                                android:fontFamily="@font/work_sans_semibold"
-                                android:hint="Enter the email address"
-                                android:inputType="textEmailAddress"
-                                android:padding="@dimen/_10sdp"
-                                android:singleLine="true"
-                                android:text="@={loginregisterViewModel.EmailRegister}"
-                                android:textColor="@color/colorBlack"
-                                android:textSize="@dimen/_12sdp"
-                                app:error="@{loginregisterViewModel.EmailRegisterError}"
-                                tools:ignore="Autofill"
-                                tools:targetApi="lollipop" />
-
-                            <TextView
-                                android:id="@+id/mTextViewSignupEmailError"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:fontFamily="@font/work_sans_semibold"
-                                android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp"
-                                android:visibility="gone" />
-
-
-                            <TextView
-                                android:id="@+id/tv_password"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/_22sdp"
-                                android:layout_marginTop="@dimen/_5sdp"
-                                android:fontFamily="@font/work_sans_semibold"
-                                android:gravity="center"
-                                android:text="Password"
-                                android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_12sdp" />
-
-                            <EditText
-                                android:id="@+id/editTextSignUpPassword"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_36sdp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/background_rounded_edit_text_gray"
-                                android:elevation="@dimen/_5sdp"
-                                android:fontFamily="@font/work_sans_semibold"
-                                android:hint="Enter the password"
-                                android:imeOptions="actionDone"
-                                android:inputType="textPassword"
-                                android:padding="@dimen/_10sdp"
-                                android:singleLine="true"
-                                android:text="@={loginregisterViewModel.PasswordRegister}"
-                                android:textColor="@color/colorBlack"
-                                android:textSize="@dimen/_12sdp"
-                                app:error="@{loginregisterViewModel.PasswordRegisterError}"
-                                tools:ignore="Autofill"
-                                tools:targetApi="lollipop" />
-
-                            <TextView
-                                android:id="@+id/mTextViewPasswordError"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:fontFamily="@font/work_sans_semibold"
-                                android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp"
-                                android:visibility="gone" />
-
-                            <LinearLayout
-                                android:id="@+id/layoutSignUp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_30sdp"
-                                android:layout_marginBottom="@dimen/_20sdp"
-                                android:background="@drawable/background_corner_radius_white"
-                                android:gravity="center"
-                                android:onClick="@{(v)->loginregisterViewModel.onRegisterClick(v)}"
-                                android:padding="@dimen/_8sdp">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/work_sans_semibold"
-                                    android:text="Sign-up"
-                                    android:textAlignment="center"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="@dimen/_16sdp" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </LinearLayout>
-                </ScrollView>
             </LinearLayout>
+
         </FrameLayout>
 
     </FrameLayout>

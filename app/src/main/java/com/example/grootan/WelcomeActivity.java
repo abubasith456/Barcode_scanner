@@ -32,6 +32,9 @@ public class WelcomeActivity extends AppIntro {
         welcomeViewModel.getCurrentUser().observe(this, new Observer<FirebaseUser>() {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {
+
+                //Too slow to intent to dashboard activity.
+
                 if (firebaseUser != null) {
                     Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                     startActivity(intent);
@@ -60,6 +63,8 @@ public class WelcomeActivity extends AppIntro {
 
     }
 
+
+    //faster intent to Dashboard activity
     @Override
     protected void onStart() {
         super.onStart();

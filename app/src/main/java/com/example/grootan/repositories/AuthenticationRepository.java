@@ -47,32 +47,6 @@ public class AuthenticationRepository {
         userModel = new UserModel();
     }
 
-//    public void currentUserDetails() {
-//        try {
-//            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-//            DocumentReference documentReference = firebaseFirestore.collection("Users").document(auth.getUid());
-//            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                    if (task.isSuccessful()) {
-//                        if (task.getResult().exists()) {
-//                            String name = task.getResult().getString("userName");
-//                            String email = task.getResult().getString("userEmailAddress");
-////                            String emailAddressResult = task.getResult().getString("userEmailAddress");
-////                            textViewUserName.setText("Hi... " + nameResult);
-//                            userModel = new UserModel(name, email);
-//
-//                        }
-//                    } else {
-//                        Toast.makeText(application.getApplicationContext(), "" + task.getException().toString(), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            });
-//        } catch (Exception exception) {
-//            Log.e("Error ==> ", "" + exception);
-//        }
-//    }
-
     public void register(String email, String pass, String name) {
         auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
