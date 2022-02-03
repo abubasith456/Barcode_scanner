@@ -19,6 +19,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class AuthenticationRepository {
     private Application application;
@@ -26,6 +30,7 @@ public class AuthenticationRepository {
 
     private MutableLiveData<Boolean> userLoggedMutableLiveData;
     private FirebaseAuth auth;
+    private FirebaseFirestore firebaseFirestore;
 
 
     public MutableLiveData<FirebaseUser> getFirebaseLoginUserMutableLiveData() {
@@ -41,22 +46,44 @@ public class AuthenticationRepository {
         firebaseLoginUserMutableLiveData = new MutableLiveData<>();
         userLoggedMutableLiveData = new MutableLiveData<>();
         auth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         if (auth.getCurrentUser() != null) {
             firebaseLoginUserMutableLiveData.postValue(auth.getCurrentUser());
         }
     }
 
-    public void register(String email, String pass) {
+    public void register(String email, String pass, String name) {
         auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Intent intent = new Intent(application.getApplicationContext(), ScanBarCodeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("indicate", "new");
                     application.startActivities(new Intent[]{intent});
+                    storeUserInputData(name, email);
                 } else {
                     Toast.makeText(application, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void storeUserInputData(String name, String email) {
+
+        HashMap<String, Object> addFieldInfo = new HashMap<>();
+        addFieldInfo.put("userId", "" + auth.getCurrentUser().getUid());
+        addFieldInfo.put("userEmailAddress", "" + email);
+        addFieldInfo.put("userName", "" + name);
+        DocumentReference databaseReference = firebaseFirestore.collection("Users").document(auth.getCurrentUser().getUid());
+        databaseReference.set(addFieldInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(application.getApplicationContext(), "User data uploaded", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(application.getApplicationContext(), "" + task.getException().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

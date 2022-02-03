@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<data>
-    <variable
-        name="dashboardViewModel"
-        type="com.example.grootan.viewModel.DashboardViewModel" />
-</data>
+
+    <data>
+
+        <variable
+            name="view"
+            type="android.view.View" />
+
+        <variable
+            name="dashboardViewModel"
+            type="com.example.grootan.viewModel.DashboardViewModel" />
+    </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -25,6 +31,7 @@
                 android:id="@+id/linear_layout_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:onClick="@{(v)->dashboardViewModel.onMenuOpenClick(v)}"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp">
 
@@ -40,6 +47,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/textViewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/work_sans_semibold"
@@ -124,12 +132,13 @@
                         android:layout_height="@dimen/_50sdp"
                         android:fontFamily="@font/work_sans_semibold"
                         android:gravity="start|center_vertical"
+                        android:onClick="@{(v)->dashboardViewModel.onSignOut(v)}"
                         android:paddingStart="@dimen/_15sdp"
                         android:paddingEnd="@dimen/_15sdp"
                         android:text="Logout"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/_16sdp" />
-<!--                        android:onClick="@{(v)->dashboardViewModel.onSignOut(v)}"-->
+                    <!--                        android:onClick="@{(v)->dashboardViewModel.onSignOut(v)}"-->
 
                     <TextView
                         android:layout_width="match_parent"
@@ -144,6 +153,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
                     android:background="#7F000000"
+                    android:onClick="@{(v)->dashboardViewModel.onMenuCloseClick(v)}"
                     android:orientation="vertical"
                     tools:ignore="UselessParent" />
 
@@ -160,6 +170,7 @@
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:backgroundTint="@color/colorAccent"
+            android:onClick="@{(v)->dashboardViewModel.onFloatingButtonClick(v)}"
             android:src="@drawable/icon_camera" />
 
     </FrameLayout>

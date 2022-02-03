@@ -1,18 +1,14 @@
 package com.example.grootan.viewModel;
 
 import android.app.Application;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableField;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.grootan.R;
 import com.example.grootan.databinding.ActivityLoginBinding;
 import com.example.grootan.repositories.AuthenticationRepository;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +25,7 @@ public class LoginRegisterViewModel extends AndroidViewModel {
     public MutableLiveData<String> EmailRegisterError = new MutableLiveData<>();
     public MutableLiveData<String> PasswordRegisterError = new MutableLiveData<>();
     public MutableLiveData<String> NameRegisterError = new MutableLiveData<>();
+    public MutableLiveData<Boolean> onClickResult = new MutableLiveData<>();
     private AuthenticationRepository repository;
     private MutableLiveData<FirebaseUser> userLoginData;
     private MutableLiveData<Boolean> loggedStatus;
@@ -42,6 +39,11 @@ public class LoginRegisterViewModel extends AndroidViewModel {
 //    public MutableLiveData<Boolean> getLoggedStatus() {
 //        return loggedStatus;
 //    }
+
+    public MutableLiveData<Boolean> onclickHide(View view) {
+        onClickResult.setValue(false);
+        return onClickResult;
+    }
 
     public void getBinding(ActivityLoginBinding activityLoginBinding) {
         this.activityLoginBinding = activityLoginBinding;
@@ -76,9 +78,8 @@ public class LoginRegisterViewModel extends AndroidViewModel {
 
     public void onRegisterClick(View view) {
         try {
-
             if (validateRegister(NameRegister.getValue(), EmailRegister.getValue(), PasswordRegister.getValue())) {
-                repository.register(EmailRegister.getValue(), PasswordRegister.getValue());
+                repository.register(EmailRegister.getValue(), PasswordRegister.getValue(), NameRegister.getValue());
             }
         } catch (Exception exception) {
             Log.e("Error ==> ", "" + exception);

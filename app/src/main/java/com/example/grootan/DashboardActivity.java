@@ -62,6 +62,7 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_dashboard);
+        dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         activityDashboardBinding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
         activityDashboardBinding.setLifecycleOwner(this);
         activityDashboardBinding.setDashboardViewModel(dashboardViewModel);
@@ -69,10 +70,10 @@ public class DashboardActivity extends AppCompatActivity {
         activityDashboardBinding.recyclerView.setHasFixedSize(true);
         scannedDataAdapter = new ScannedDataAdapter();
         activityDashboardBinding.recyclerView.setAdapter(scannedDataAdapter);
-        dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
+        dashboardViewModel.passBinding(activityDashboardBinding);
         getScannedData();
 
-        linear_layout_menu = findViewById(R.id.linear_layout_menu);
+//        linear_layout_menu = findViewById(R.id.linear_layout_menu);
         sideMenu = findViewById(R.id.sideMenu);
         sideMenuClose = findViewById(R.id.sideMenuClose);
         textViewUserName = findViewById(R.id.textViewUserName);
@@ -82,29 +83,29 @@ public class DashboardActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         timeStamp = "" + System.currentTimeMillis();
-        QR_value = getIntent().getStringExtra("QR_value");
+//        QR_value = getIntent().getStringExtra("QR_value");
         loadUserInfo();
-        linear_layout_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    sideMenu.setVisibility(View.VISIBLE);
-                } catch (Exception exception) {
-                    Log.e("Error ==> ", "" + exception);
-                }
-            }
-        });
-
-        sideMenuClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    sideMenu.setVisibility(View.GONE);
-                } catch (Exception exception) {
-                    Log.e("Error ==> ", "" + exception);
-                }
-            }
-        });
+//        linear_layout_menu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                try {
+//                    sideMenu.setVisibility(View.VISIBLE);
+//                } catch (Exception exception) {
+//                    Log.e("Error ==> ", "" + exception);
+//                }
+//            }
+//        });
+//
+//        sideMenuClose.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                try {
+//                    sideMenu.setVisibility(View.GONE);
+//                } catch (Exception exception) {
+//                    Log.e("Error ==> ", "" + exception);
+//                }
+//            }
+//        });
 
         textViewLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,22 +144,22 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        floatingButtonOpenCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-
-                    Intent intent = new Intent(DashboardActivity.this, ScanBarCodeActivity.class);
-                    intent.putExtra("indicator", "exist");
-                    startActivity(intent);
-//                    finish();
-//                    Intent intent = new Intent(getApplicationContext(), ScanBarCodeActivity.class);
-//                    startActivityForResult(intent, 2);
-                } catch (Exception exception) {
-                    Log.e("Error ==> ", "" + exception);
-                }
-            }
-        });
+//        floatingButtonOpenCamera.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                try {
+//
+//                    Intent intent = new Intent(DashboardActivity.this, ScanBarCodeActivity.class);
+//                    intent.putExtra("indicator", "exist");
+//                    startActivity(intent);
+////                    finish();
+////                    Intent intent = new Intent(getApplicationContext(), ScanBarCodeActivity.class);
+////                    startActivityForResult(intent, 2);
+//                } catch (Exception exception) {
+//                    Log.e("Error ==> ", "" + exception);
+//                }
+//            }
+//        });
     }
 
     private void getScannedData() {

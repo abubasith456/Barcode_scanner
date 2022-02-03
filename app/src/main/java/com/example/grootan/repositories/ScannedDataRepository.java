@@ -75,31 +75,35 @@ public class ScannedDataRepository {
 
     public void signOut() {
         try {
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(application.getApplicationContext());
-            builder1.setMessage("Are you sure.. do you want to logout?");
-            builder1.setCancelable(true);
-
-            builder1.setPositiveButton(
-                    "Yes",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            auth.signOut();
-                            Intent intent = new Intent(application.getApplicationContext(), LoginRegisterActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            application.startActivity(intent);
-                        }
-                    });
-
-            builder1.setNegativeButton(
-                    "No",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-
-            AlertDialog alert11 = builder1.create();
-            alert11.show();
+            auth.signOut();
+            Intent intent = new Intent(application.getApplicationContext(), LoginRegisterActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            application.startActivity(intent);
+//            AlertDialog.Builder builder1 = new AlertDialog.Builder(application.getApplicationContext());
+//            builder1.setMessage("Are you sure.. do you want to logout?");
+//            builder1.setCancelable(true);
+//
+//            builder1.setPositiveButton(
+//                    "Yes",
+//                    new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                            auth.signOut();
+//                            Intent intent = new Intent(application.getApplicationContext(), LoginRegisterActivity.class);
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            application.startActivity(intent);
+//                        }
+//                    });
+//
+//            builder1.setNegativeButton(
+//                    "No",
+//                    new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                            dialog.cancel();
+//                        }
+//                    });
+//
+//            AlertDialog alert11 = builder1.create();
+//            alert11.show();
         } catch (Exception exception) {
             Log.e("Error ==> ", "" + exception);
         }

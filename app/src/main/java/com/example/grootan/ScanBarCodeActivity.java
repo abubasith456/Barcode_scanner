@@ -33,7 +33,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.grootan.databinding.ActivityDashboardBinding;
+import com.example.grootan.databinding.ActivityScanBarCodeBinding;
 import com.example.grootan.viewModel.ScanBarcodeViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -68,7 +68,7 @@ public class ScanBarCodeActivity extends AppCompatActivity {
     private MyImageAnalyzer analyzer;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private ActivityDashboardBinding activityDashboardBinding;
+    private ActivityScanBarCodeBinding activityScanBarCodeBinding;
     private ScanBarcodeViewModel scanBarcodeViewModel;
     FrameLayout sideMenu;
     LinearLayout linear_layout_back, sideMenuClose;
@@ -76,34 +76,27 @@ public class ScanBarCodeActivity extends AppCompatActivity {
     TextView textViewLogout;
     String timeStamp, indicate;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scan_bar_code);
-
-        activityDashboardBinding = DataBindingUtil.setContentView(this, R.layout.activity_scan_bar_code);
+//        setContentView(R.layout.activity_scan_bar_code);
+        activityScanBarCodeBinding = DataBindingUtil.setContentView(this, R.layout.activity_scan_bar_code);
         scanBarcodeViewModel = ViewModelProviders.of(this).get(ScanBarcodeViewModel.class);
-
+        activityScanBarCodeBinding.setLifecycleOwner(this);
+        activityScanBarCodeBinding.setScanBarcodeViewModel(scanBarcodeViewModel);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         timeStamp = "" + System.currentTimeMillis();
         previewView = findViewById(R.id.previewView);
-        linear_layout_back = findViewById(R.id.linear_layout_back);
+//        linear_layout_back = findViewById(R.id.linear_layout_back);
         sideMenu = findViewById(R.id.sideMenu);
         sideMenuClose = findViewById(R.id.sideMenuClose);
         textViewLogout = findViewById(R.id.textViewLogout);
         appCompatImageView = findViewById(R.id.imageviewBack);
-        indicate = getIntent().getStringExtra("indicator");
+        indicate = getIntent().getStringExtra("indicate");
 
-        try {
-            if (indicate.equals("new")) {
-                appCompatImageView.setImageResource(R.drawable.icon_menu);
-            } else {
-                appCompatImageView.setImageResource(R.drawable.icon_back);
-            }
-        } catch (Exception exception) {
-            Log.e("Error ==> ", "" + exception);
-        }
+        scanBarcodeViewModel.imageViewChange(activityScanBarCodeBinding,indicate);
 
         this.getWindow().setFlags(1024, 1024);
         cameraExecutor = Executors.newSingleThreadExecutor();
@@ -121,31 +114,31 @@ public class ScanBarCodeActivity extends AppCompatActivity {
             }
         }, ContextCompat.getMainExecutor(this));
 
-        linear_layout_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    try {
-                        if (indicate.equals("new")) {
-                            sideMenu.setVisibility(View.VISIBLE);
-                        } else {
-                            Intent intent = new Intent(ScanBarCodeActivity.this, DashboardActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.slide_in_left,
-                                    R.anim.slide_out_right);
-                            finish();
-                        }
-                    } catch (Exception exception) {
-                        Log.e("Error ==> ", "" + exception);
-                    }
-
-//                    sideMenu.setVisibility(View.VISIBLE);
-                } catch (Exception exception) {
-                    Log.e("Error ==> ", "" + exception);
-                }
-            }
-        });
+//        linear_layout_back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                try {
+//                    try {
+//                        if (indicate.equals("new")) {
+//                            sideMenu.setVisibility(View.VISIBLE);
+//                        } else {
+//                            Intent intent = new Intent(ScanBarCodeActivity.this, DashboardActivity.class);
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            startActivity(intent);
+//                            overridePendingTransition(R.anim.slide_in_left,
+//                                    R.anim.slide_out_right);
+//                            finish();
+//                        }
+//                    } catch (Exception exception) {
+//                        Log.e("Error ==> ", "" + exception);
+//                    }
+//
+////                    sideMenu.setVisibility(View.VISIBLE);
+//                } catch (Exception exception) {
+//                    Log.e("Error ==> ", "" + exception);
+//                }
+//            }
+//        });
 
         sideMenuClose.setOnClickListener(new View.OnClickListener() {
             @Override

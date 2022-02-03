@@ -4,6 +4,10 @@
     <data>
 
         <variable
+            name="view"
+            type="android.view.View" />
+
+        <variable
             name="loginregisterViewModel"
             type="com.example.grootan.viewModel.LoginRegisterViewModel" />
     </data>
@@ -20,7 +24,8 @@
             android:layout_height="@dimen/_30sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:visibility="gone">
+            android:onClick="@{(v)->loginregisterViewModel.onclickHide(v)}"
+            android:visibility="@{loginregisterViewModel.onClickResult?view.VISIBLE:view.GONE}">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -29,13 +34,13 @@
 
         </LinearLayout>
 
-        <!-- Register -->
+        <!-- Login -->
 
         <FrameLayout
             android:id="@+id/frameLayoutLogin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="@{loginregisterViewModel.onClickResult?view.GONE:view.VISIBLE}">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,11 +62,11 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_20sdp" />
 
-                <Spinner
-                    android:id="@+id/spinnerLoggedUser"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_15sdp" />
+<!--                <Spinner-->
+<!--                    android:id="@+id/spinnerLoggedUser"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginBottom="@dimen/_15sdp" />-->
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -230,7 +235,7 @@
             android:id="@+id/frameLayoutRegister"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="@{loginregisterViewModel.onClickResult?view.VISIBLE:view.GONE}">
 
             <LinearLayout
                 android:layout_width="match_parent"

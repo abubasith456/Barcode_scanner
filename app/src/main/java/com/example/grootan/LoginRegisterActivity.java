@@ -47,8 +47,8 @@ public class LoginRegisterActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
     EmailValidator emailValidator;
-    Spinner spinnerLoggedUser;
-    ArrayList<String> spinnerArrayList;
+//    Spinner spinnerLoggedUser;
+//    ArrayList<String> spinnerArrayList;
     ArrayAdapter<String> spinnerAdapter;
 
     private ActivityLoginBinding activityLoginBinding;
@@ -88,7 +88,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
         linearLayoutClose = findViewById(R.id.linearLayoutClose);
         frameLayoutLogin = findViewById(R.id.frameLayoutLogin);
         frameLayoutRegister = findViewById(R.id.frameLayoutRegister);
-        spinnerLoggedUser = findViewById(R.id.spinnerLoggedUser);
+//        spinnerLoggedUser = findViewById(R.id.spinnerLoggedUser);
 
         //Register
         editTextSignUpUserName = findViewById(R.id.editTextSignUpUserName);
@@ -102,10 +102,10 @@ public class LoginRegisterActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         emailValidator = new EmailValidator();
-        spinnerArrayList = new ArrayList<>();
-        spinnerAdapter = new ArrayAdapter<>(LoginRegisterActivity.this, android.R.layout.simple_spinner_dropdown_item, spinnerArrayList);
-        spinnerLoggedUser.setAdapter(spinnerAdapter);
-        loadUsers();
+//        spinnerArrayList = new ArrayList<>();
+//        spinnerAdapter = new ArrayAdapter<>(LoginRegisterActivity.this, android.R.layout.simple_spinner_dropdown_item, spinnerArrayList);
+//        spinnerLoggedUser.setAdapter(spinnerAdapter);
+//        loadUsers();
 
 //        layoutSignIn.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -160,52 +160,52 @@ public class LoginRegisterActivity extends AppCompatActivity {
 //            }
 //        });
 
-        spinnerLoggedUser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                if (adapterView.getItemAtPosition(i).toString().equals("Select user")) {
-//                    editTextEmailInput.setText("");
-                } else {
-                    String item = adapterView.getItemAtPosition(i).toString();
-                    editTextEmailInput.setText(item);
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//        spinnerLoggedUser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//                if (adapterView.getItemAtPosition(i).toString().equals("Select user")) {
+////                    editTextEmailInput.setText("");
+//                } else {
+//                    String item = adapterView.getItemAtPosition(i).toString();
+//                    editTextEmailInput.setText(item);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
     }
 
-    private void loadUsers() {
-        try {
-            firebaseFirestore.collection("Users").get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            spinnerArrayList.add("Select user");
-                            if (task.isSuccessful()) {
-                                for (DocumentSnapshot documentSnapshot : task.getResult()) {
-                                    String data = documentSnapshot.getString("userEmailAddress");
-                                    spinnerArrayList.add(data);
-                                }
-                                spinnerAdapter.notifyDataSetChanged();
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        } catch (Exception exception) {
-            Log.e("Error ==> ", "" + exception);
-        }
-    }
+//    private void loadUsers() {
+//        try {
+//            firebaseFirestore.collection("Users").get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            spinnerArrayList.add("Select user");
+//                            if (task.isSuccessful()) {
+//                                for (DocumentSnapshot documentSnapshot : task.getResult()) {
+//                                    String data = documentSnapshot.getString("userEmailAddress");
+//                                    spinnerArrayList.add(data);
+//                                }
+//                                spinnerAdapter.notifyDataSetChanged();
+//                            }
+//                        }
+//                    }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//
+//        } catch (Exception exception) {
+//            Log.e("Error ==> ", "" + exception);
+//        }
+//    }
 
     public void firebaseLogin() {
         try {
