@@ -1,26 +1,20 @@
 package com.example.grootan.adapter;
 
-import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.grootan.R;
 import com.example.grootan.databinding.RowItemViewDataBinding;
-import com.example.grootan.models.ScannedData;
+import com.example.grootan.models.ScannedDataModel;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import io.grpc.Context;
 
 public class ScannedDataAdapter extends RecyclerView.Adapter<ScannedDataAdapter.ScannedDataViewHolder> {
-    private ArrayList<ScannedData> scannedDataArrayList;
+    private ArrayList<ScannedDataModel> scannedDataModelArrayList;
     private Context context;
 
 //    public ScannedDataAdapter(ArrayList<ScannedData> scannedDataArrayList) {
@@ -39,21 +33,21 @@ public class ScannedDataAdapter extends RecyclerView.Adapter<ScannedDataAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ScannedDataViewHolder holder, int position) {
-        ScannedData scannedData = scannedDataArrayList.get(position);
-        holder.rowItemViewDataBinding.setScannedData(scannedData);
+        ScannedDataModel scannedDataModel = scannedDataModelArrayList.get(position);
+        holder.rowItemViewDataBinding.setScannedDataModel(scannedDataModel);
     }
 
     @Override
     public int getItemCount() {
-        if (scannedDataArrayList != null) {
-            return scannedDataArrayList.size();
+        if (scannedDataModelArrayList != null) {
+            return scannedDataModelArrayList.size();
         } else {
             return 0;
         }
     }
 
-    public void getScannedData(ArrayList<ScannedData> arrayList) {
-        this.scannedDataArrayList = arrayList;
+    public void getScannedData(ArrayList<ScannedDataModel> arrayList) {
+        this.scannedDataModelArrayList = arrayList;
         notifyDataSetChanged();
 
     }

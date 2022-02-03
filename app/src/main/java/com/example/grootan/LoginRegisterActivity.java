@@ -1,6 +1,7 @@
 package com.example.grootan;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -9,7 +10,9 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.grootan.databinding.ActivityLoginBinding;
+import com.example.grootan.dialog.CustomDialog;
 import com.example.grootan.utils.EmailValidator;
 import com.example.grootan.viewModel.LoginRegisterViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -53,6 +57,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     private ActivityLoginBinding activityLoginBinding;
     private LoginRegisterViewModel loginRegisterViewModel;
+    private CustomDialog customDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +74,14 @@ public class LoginRegisterActivity extends AppCompatActivity {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {
                 if (firebaseUser != null) {
-                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-                    startActivity(intent);
+                    try {
+                        Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                        startActivity(intent);
+                    } catch (Exception exception) {
+                        Log.e("Error ==> ", "" + exception);
+                    }
+
+
                 }
             }
         });

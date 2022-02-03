@@ -1,25 +1,22 @@
 package com.example.grootan.repositories;
 
 import android.app.Application;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.grootan.DashboardActivity;
-import com.example.grootan.LoginRegisterActivity;
 import com.example.grootan.ScanBarCodeActivity;
+import com.example.grootan.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -27,10 +24,10 @@ import java.util.HashMap;
 public class AuthenticationRepository {
     private Application application;
     private MutableLiveData<FirebaseUser> firebaseLoginUserMutableLiveData;
-
     private MutableLiveData<Boolean> userLoggedMutableLiveData;
     private FirebaseAuth auth;
     private FirebaseFirestore firebaseFirestore;
+    private UserModel userModel;
 
 
     public MutableLiveData<FirebaseUser> getFirebaseLoginUserMutableLiveData() {
@@ -47,9 +44,33 @@ public class AuthenticationRepository {
         userLoggedMutableLiveData = new MutableLiveData<>();
         auth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
+        userModel = new UserModel();
+        currentUserDetails();
+    }
 
-        if (auth.getCurrentUser() != null) {
-            firebaseLoginUserMutableLiveData.postValue(auth.getCurrentUser());
+    public void currentUserDetails() {
+        try {
+            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+            DocumentReference documentReference = firebaseFirestore.collection("Users").document(auth.getUid());
+            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().exists()) {
+                            String name = task.getResult().getString("userName");
+                            String email = task.getResult().getString("userEmailAddress");
+//                            String emailAddressResult = task.getResult().getString("userEmailAddress");
+//                            textViewUserName.setText("Hi... " + nameResult);
+                            userModel = new UserModel(name, email);
+
+                        }
+                    } else {
+                        Toast.makeText(application.getApplicationContext(), "" + task.getException().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } catch (Exception exception) {
+            Log.e("Error ==> ", "" + exception);
         }
     }
 
@@ -95,7 +116,9 @@ public class AuthenticationRepository {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     firebaseLoginUserMutableLiveData.postValue(auth.getCurrentUser());
+
                 } else {
+
                     Toast.makeText(application, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }

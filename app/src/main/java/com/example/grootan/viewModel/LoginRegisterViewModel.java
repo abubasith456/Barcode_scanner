@@ -28,17 +28,12 @@ public class LoginRegisterViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> onClickResult = new MutableLiveData<>();
     private AuthenticationRepository repository;
     private MutableLiveData<FirebaseUser> userLoginData;
-    private MutableLiveData<Boolean> loggedStatus;
     private Application application;
     private ActivityLoginBinding activityLoginBinding;
 
     public MutableLiveData<FirebaseUser> getUserLoginData() {
         return userLoginData;
     }
-
-//    public MutableLiveData<Boolean> getLoggedStatus() {
-//        return loggedStatus;
-//    }
 
     public MutableLiveData<Boolean> onclickHide(View view) {
         onClickResult.setValue(false);
@@ -54,20 +49,11 @@ public class LoginRegisterViewModel extends AndroidViewModel {
         this.application = application;
         repository = new AuthenticationRepository(application);
         userLoginData = repository.getFirebaseLoginUserMutableLiveData();
-        loggedStatus = repository.getUserLoggedMutableLiveData();
+//        loadUserDetails();
     }
-
 
     public void onLoginClick(View view) {
         try {
-//            if (!TextUtils.isEmpty(EmailLogin.get()) ){
-//                activityLoginBinding.mTextViewLoginErrorEmail.setVisibility(View.VISIBLE);
-//                activityLoginBinding.editTextEmailInput.setBackground(application.getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
-//                activityLoginBinding.mTextViewLoginErrorEmail.setText(application.getResources().getString(R.string.error_username));
-//            } else {
-//                activityLoginBinding.mTextViewLoginErrorEmail.setVisibility(View.GONE);
-//                activityLoginBinding.editTextEmailInput.setBackground(application.getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
-//            }
             if (validateLogin(EmailLogin.getValue(), PasswordLogin.getValue())) {
                 repository.login(EmailLogin.getValue(), PasswordLogin.getValue());
             }
@@ -86,14 +72,6 @@ public class LoginRegisterViewModel extends AndroidViewModel {
         }
     }
 
-//    public void onSignOut(View view) {
-//        try {
-//            repository.signOut();
-//        } catch (Exception exception) {
-//            Log.e("Error ==> ", "" + exception);
-//        }
-//    }
-
     public boolean validateLogin(String email, String password) {
         EmailError.setValue(null);
         PasswordError.setValue(null);
@@ -111,25 +89,6 @@ public class LoginRegisterViewModel extends AndroidViewModel {
                 EmailError.setValue("Please enter a valid email address.");
                 valid = false;
             }
-
-//            if (!TextUtils.isEmpty(email)) {
-//                activityLoginBinding.mTextViewLoginErrorEmail.setVisibility(View.VISIBLE);
-//                activityLoginBinding.editTextEmailInput.setBackground(application.getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
-//                activityLoginBinding.mTextViewLoginErrorEmail.setText(application.getResources().getString(R.string.error_username));
-//                valid = false;
-//            } else {
-//                activityLoginBinding.mTextViewLoginErrorEmail.setVisibility(View.GONE);
-//                activityLoginBinding.editTextEmailInput.setBackground(application.getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
-//            }
-//            if (password == null) {
-//                activityLoginBinding.mTextViewLoginErrorPassword.setVisibility(View.VISIBLE);
-//                activityLoginBinding.editTextPasswordInput.setBackground(application.getResources().getDrawable(R.drawable.background_rounded_edit_text_error));
-//                activityLoginBinding.mTextViewLoginErrorPassword.setText(application.getResources().getString(R.string.email_error));
-//                valid = false;
-//            } else {
-//                activityLoginBinding.mTextViewLoginErrorPassword.setVisibility(View.GONE);
-//                activityLoginBinding.editTextSignUpEmail.setBackground(application.getResources().getDrawable(R.drawable.background_rounded_edit_text_gray));
-//            }
         } catch (Exception exception) {
             Log.e("Error ==> ", "" + exception);
         }
@@ -158,19 +117,6 @@ public class LoginRegisterViewModel extends AndroidViewModel {
                 EmailRegisterError.setValue("Please enter a valid email address.");
                 valid = false;
             }
-
-
-//            if (name == null) {
-//
-//                valid = false;
-//            } else if (email == null) {
-//                Toast.makeText(application.getApplicationContext(), "Please enter the email", Toast.LENGTH_SHORT).show();
-//                valid = false;
-//            } else if (password == null) {
-//                Toast.makeText(application.getApplicationContext(), "Please enter the password", Toast.LENGTH_SHORT).show();
-//                valid = false;
-//            }
-
         } catch (Exception exception) {
             Log.e("Error ==> ", "" + exception);
         }

@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="scannedData"
-            type="com.example.grootan.models.ScannedData" />
+            name="scannedDataModel"
+            type="com.example.grootan.models.ScannedDataModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -44,7 +44,7 @@
                     android:fontFamily="@font/work_sans_medium"
                     android:gravity="start|center"
                     android:singleLine="false"
-                    android:text="@{scannedData.scanned_data}"
+                    android:text="@{scannedDataModel.scanned_data}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_13sdp" />
 
@@ -64,7 +64,7 @@
                         android:fontFamily="@font/work_sans_medium"
                         android:gravity="start"
                         android:singleLine="false"
-                        android:text="@{scannedData.date}"
+                        android:text="@{scannedDataModel.date}"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/_12sdp" />
 
@@ -77,7 +77,7 @@
                         android:fontFamily="@font/work_sans_medium"
                         android:gravity="end"
                         android:singleLine="false"
-                        android:text="@{scannedData.time}"
+                        android:text="@{scannedDataModel.time}"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/_12sdp" />
 

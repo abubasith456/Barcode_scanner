@@ -8,6 +8,10 @@
             type="android.view.View" />
 
         <variable
+            name="user"
+            type="com.example.grootan.models.UserModel" />
+
+        <variable
             name="dashboardViewModel"
             type="com.example.grootan.viewModel.DashboardViewModel" />
     </data>
@@ -117,7 +121,7 @@
                         android:gravity="start|center_vertical"
                         android:paddingStart="@dimen/_15sdp"
                         android:paddingEnd="@dimen/_15sdp"
-                        android:text="Hi..Grootan user"
+                        android:text="@{user.username}"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/_16sdp" />
 

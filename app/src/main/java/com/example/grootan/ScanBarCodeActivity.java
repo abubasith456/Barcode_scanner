@@ -66,38 +66,21 @@ public class ScanBarCodeActivity extends AppCompatActivity {
     private ListenableFuture cameraProviderFuture;
     private ExecutorService cameraExecutor;
     private MyImageAnalyzer analyzer;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firebaseFirestore;
     private ActivityScanBarCodeBinding activityScanBarCodeBinding;
     private ScanBarcodeViewModel scanBarcodeViewModel;
-    FrameLayout sideMenu;
-    LinearLayout linear_layout_back, sideMenuClose;
-    ImageView appCompatImageView;
-    TextView textViewLogout;
     String timeStamp, indicate;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_scan_bar_code);
         activityScanBarCodeBinding = DataBindingUtil.setContentView(this, R.layout.activity_scan_bar_code);
         scanBarcodeViewModel = ViewModelProviders.of(this).get(ScanBarcodeViewModel.class);
         activityScanBarCodeBinding.setLifecycleOwner(this);
         activityScanBarCodeBinding.setScanBarcodeViewModel(scanBarcodeViewModel);
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
         timeStamp = "" + System.currentTimeMillis();
-        previewView = findViewById(R.id.previewView);
-//        linear_layout_back = findViewById(R.id.linear_layout_back);
-        sideMenu = findViewById(R.id.sideMenu);
-        sideMenuClose = findViewById(R.id.sideMenuClose);
-        textViewLogout = findViewById(R.id.textViewLogout);
-        appCompatImageView = findViewById(R.id.imageviewBack);
+        previewView = activityScanBarCodeBinding.previewView;
         indicate = getIntent().getStringExtra("indicate");
-
-        scanBarcodeViewModel.imageViewChange(this,activityScanBarCodeBinding,indicate);
-
+        scanBarcodeViewModel.imageViewChange(this, activityScanBarCodeBinding, indicate);
         this.getWindow().setFlags(1024, 1024);
         cameraExecutor = Executors.newSingleThreadExecutor();
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
@@ -113,80 +96,6 @@ public class ScanBarCodeActivity extends AppCompatActivity {
                 exception.printStackTrace();
             }
         }, ContextCompat.getMainExecutor(this));
-
-//        linear_layout_back.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                try {
-//                    try {
-//                        if (indicate.equals("new")) {
-//                            sideMenu.setVisibility(View.VISIBLE);
-//                        } else {
-//                            Intent intent = new Intent(ScanBarCodeActivity.this, DashboardActivity.class);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                            startActivity(intent);
-//                            overridePendingTransition(R.anim.slide_in_left,
-//                                    R.anim.slide_out_right);
-//                            finish();
-//                        }
-//                    } catch (Exception exception) {
-//                        Log.e("Error ==> ", "" + exception);
-//                    }
-//
-////                    sideMenu.setVisibility(View.VISIBLE);
-//                } catch (Exception exception) {
-//                    Log.e("Error ==> ", "" + exception);
-//                }
-//            }
-//        });
-
-        sideMenuClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    sideMenu.setVisibility(View.GONE);
-                } catch (Exception exception) {
-                    Log.e("Error ==> ", "" + exception);
-                }
-            }
-        });
-
-        textViewLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    sideMenu.setVisibility(View.GONE);
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(ScanBarCodeActivity.this);
-                    builder1.setMessage("Are you sure.. do you want to logout?");
-                    builder1.setCancelable(true);
-
-                    builder1.setPositiveButton(
-                            "Yes",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    FirebaseAuth.getInstance().signOut();
-                                    Intent intent = new Intent(ScanBarCodeActivity.this, LoginRegisterActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            });
-
-                    builder1.setNegativeButton(
-                            "No",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-
-                    AlertDialog alert11 = builder1.create();
-                    alert11.show();
-                } catch (Exception exception) {
-                    Log.e("Error ==> ", "" + exception);
-                }
-            }
-        });
     }
 
     @Override
@@ -274,7 +183,6 @@ public class ScanBarCodeActivity extends AppCompatActivity {
                 String rawValue = barcode.getRawValue();
                 scanBarcodeViewModel.getScannedData(rawValue);
                 Toast.makeText(getApplicationContext(), rawValue, Toast.LENGTH_SHORT).show();
-//                uploadDataToFirebase(rawValue);
                 Intent backIntent = new Intent(getApplicationContext(), DashboardActivity.class);
                 backIntent.putExtra("QR_value", rawValue);
                 startActivity(backIntent);
@@ -289,35 +197,35 @@ public class ScanBarCodeActivity extends AppCompatActivity {
         }
     }
 
-    private void uploadDataToFirebase(String data) {
-        try {
-
-            String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-            String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-
-            HashMap<String, Object> addFieldInfo = new HashMap<>();
-            addFieldInfo.put("id", "" + timeStamp);
-            addFieldInfo.put("uploadedDate", "" + currentDate);
-            addFieldInfo.put("uploadedTime", "" + currentTime);
-            addFieldInfo.put("uploadedData", "" + data);
-            DocumentReference databaseReference = firebaseFirestore.collection(firebaseAuth.getUid()).document(timeStamp);
-
-            databaseReference.set(addFieldInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), "Data uploaded", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        } catch (Exception exception) {
-            Log.e("Error ==> ", "" + exception);
-        }
-    }
+//    private void uploadDataToFirebase(String data) {
+//        try {
+//
+//            String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+//            String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+//
+//            HashMap<String, Object> addFieldInfo = new HashMap<>();
+//            addFieldInfo.put("id", "" + timeStamp);
+//            addFieldInfo.put("uploadedDate", "" + currentDate);
+//            addFieldInfo.put("uploadedTime", "" + currentTime);
+//            addFieldInfo.put("uploadedData", "" + data);
+//            DocumentReference databaseReference = firebaseFirestore.collection(firebaseAuth.getUid()).document(timeStamp);
+//
+//            databaseReference.set(addFieldInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                @Override
+//                public void onComplete(@NonNull Task<Void> task) {
+//                    if (task.isSuccessful()) {
+//                        Toast.makeText(getApplicationContext(), "Data uploaded", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//
+//        } catch (Exception exception) {
+//            Log.e("Error ==> ", "" + exception);
+//        }
+//    }
 }

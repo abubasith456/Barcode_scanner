@@ -1,14 +1,14 @@
 package com.example.grootan.models;
 
-public class ScannedData {
+public class ScannedDataModel {
 
     String id, date, time, scanned_data;
 
-    public ScannedData() {
+    public ScannedDataModel() {
 
     }
 
-    public ScannedData(String id, String date, String time, String scanned_data) {
+    public ScannedDataModel(String id, String date, String time, String scanned_data) {
         this.id = id;
         this.date = date;
         this.time = time;
