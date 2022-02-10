@@ -1,15 +1,19 @@
 package com.example.grootan;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.grootan.adapter.ScannedDataAdapter;
@@ -17,13 +21,7 @@ import com.example.grootan.databinding.ActivityDashboardBinding;
 import com.example.grootan.models.ScannedDataModel;
 import com.example.grootan.models.UserModel;
 import com.example.grootan.viewModel.DashboardViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +37,12 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_dashboard);
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         activityDashboardBinding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
         activityDashboardBinding.setLifecycleOwner(this);
         activityDashboardBinding.setDashboardViewModel(dashboardViewModel);
-
+        dashboardViewModel.getActivity(DashboardActivity.this);
         userModel = new UserModel();
         activityDashboardBinding.setUser(userModel);
         activityDashboardBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));

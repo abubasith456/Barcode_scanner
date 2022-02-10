@@ -121,7 +121,6 @@
                         android:gravity="start|center_vertical"
                         android:paddingStart="@dimen/_15sdp"
                         android:paddingEnd="@dimen/_15sdp"
-                        android:text="@{user.username}"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/_16sdp" />
 
@@ -142,7 +141,6 @@
                         android:text="Logout"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/_16sdp" />
-                    <!--                        android:onClick="@{(v)->dashboardViewModel.onSignOut(v)}"-->
 
                     <TextView
                         android:layout_width="match_parent"

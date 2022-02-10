@@ -160,6 +160,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
+                    android:onClick="@{(v)->loginregisterViewModel.onForgotPasswordClick(v)}"
                     android:orientation="horizontal">
 
                     <TextView
@@ -232,7 +233,7 @@
             android:id="@+id/frameLayoutRegister"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{loginregisterViewModel.onClickResult?view.VISIBLE:view.GONE}">
+            android:visibility="@{loginregisterViewModel.onClickRegister?view.VISIBLE:view.GONE}">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -409,6 +410,110 @@
             </LinearLayout>
 
         </FrameLayout>
+
+        <!-- Forgot Password -->
+
+        <FrameLayout
+            android:id="@+id/frameLayoutForgotPassword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{loginregisterViewModel.onClickForgotResult?view.VISIBLE:view.GONE}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="@dimen/_20sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:fontFamily="@font/work_sans_bold"
+                    android:text="Forgot Password"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_20sdp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_37sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:fontFamily="@font/work_sans_semibold"
+                    android:gravity="center"
+                    android:text="Email:"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_12sdp" />
+
+                <EditText
+                    android:id="@+id/editTextEmailForgotInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_36sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/background_rounded_edit_text_gray"
+                    android:elevation="@dimen/_5sdp"
+                    android:fontFamily="@font/work_sans_medium"
+                    android:hint="Enter the email"
+                    android:inputType="textEmailAddress"
+                    android:padding="@dimen/_10sdp"
+                    android:singleLine="true"
+                    android:text="@={loginregisterViewModel.ForgotPassword}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    app:error="@{loginregisterViewModel.ForgotError}"
+                    tools:ignore="Autofill"
+                    tools:targetApi="lollipop" />
+
+                <TextView
+                    android:id="@+id/mTextViewLoginErrorForgotEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:fontFamily="@font/work_sans_medium"
+                    android:textColor="@color/colorRed"
+                    android:textSize="@dimen/_10sdp"
+                    android:visibility="gone" />
+
+
+                <LinearLayout
+                    android:id="@+id/layoutForgot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:background="@drawable/background_corner_radius_white"
+                    android:gravity="center"
+                    android:onClick="@{(v)->loginregisterViewModel.onForgotClick(v)}"
+                    android:padding="@dimen/_8sdp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/work_sans_semibold"
+                        android:text="Forgot password"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_16sdp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </FrameLayout>
+
 
     </FrameLayout>
 

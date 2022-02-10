@@ -25,7 +25,12 @@ public class LoginRegisterViewModel extends AndroidViewModel {
     public MutableLiveData<String> EmailRegisterError = new MutableLiveData<>();
     public MutableLiveData<String> PasswordRegisterError = new MutableLiveData<>();
     public MutableLiveData<String> NameRegisterError = new MutableLiveData<>();
+    public MutableLiveData<String> ForgotPassword = new MutableLiveData<>();
+    public MutableLiveData<String> ForgotError = new MutableLiveData<>();
     public MutableLiveData<Boolean> onClickResult = new MutableLiveData<>();
+    public MutableLiveData<Boolean> onClickRegister = new MutableLiveData<>();
+    public MutableLiveData<Boolean> onClickForgotResult = new MutableLiveData<>();
+
     private AuthenticationRepository repository;
     private MutableLiveData<FirebaseUser> userLoginData;
     private Application application;
@@ -36,12 +41,40 @@ public class LoginRegisterViewModel extends AndroidViewModel {
     }
 
     public MutableLiveData<Boolean> onclickHide(View view) {
+        EmailRegisterError.setValue(null);
+        PasswordRegisterError.setValue(null);
+        NameRegisterError.setValue(null);
+        ForgotError.setValue(null);
+
+        EmailRegister.setValue(null);
+        PasswordRegister.setValue(null);
+        NameRegister.setValue(null);
+        ForgotPassword.setValue(null);
+
         onClickResult.setValue(false);
+        onClickRegister.setValue(false);
+        onClickForgotResult.setValue(false);
         return onClickResult;
     }
 
     public MutableLiveData<Boolean> onClickShow(View view) {
+        EmailError.setValue(null);
+        PasswordError.setValue(null);
+
+        EmailLogin.setValue(null);
+        PasswordLogin.setValue(null);
+
         onClickResult.setValue(true);
+        onClickRegister.setValue(true);
+        return onClickResult;
+    }
+
+    public MutableLiveData<Boolean> onForgotPasswordClick(View view) {
+        EmailError.setValue(null);
+        PasswordError.setValue(null);
+        onClickResult.setValue(true);
+        onClickRegister.setValue(false);
+        onClickForgotResult.setValue(true);
         return onClickResult;
     }
 
@@ -59,25 +92,35 @@ public class LoginRegisterViewModel extends AndroidViewModel {
 
     public void onLoginClick(View view) {
         try {
-            if (validateLogin(EmailLogin.getValue(), PasswordLogin.getValue())) {
+            if (validateLogin()) {
                 repository.login(EmailLogin.getValue(), PasswordLogin.getValue());
             }
         } catch (Exception exception) {
-            Log.e("Error ==> ", "" + exception);
+            Log.e("Error login==> ", "" + exception);
         }
     }
 
     public void onRegisterClick(View view) {
         try {
-            if (validateRegister(NameRegister.getValue(), EmailRegister.getValue(), PasswordRegister.getValue())) {
+            if (validateRegister()) {
                 repository.register(EmailRegister.getValue(), PasswordRegister.getValue(), NameRegister.getValue());
             }
         } catch (Exception exception) {
-            Log.e("Error ==> ", "" + exception);
+            Log.e("Error register ==> ", "" + exception);
         }
     }
 
-    public boolean validateLogin(String email, String password) {
+    public void onForgotClick(View view) {
+        try {
+            if (validateForgot()) {
+                repository.forgot(ForgotPassword.getValue());
+            }
+        } catch (Exception exception) {
+            Log.e("Error forgot==> ", "" + exception);
+        }
+    }
+
+    public boolean validateLogin() {
         EmailError.setValue(null);
         PasswordError.setValue(null);
         boolean valid = true;
@@ -100,7 +143,7 @@ public class LoginRegisterViewModel extends AndroidViewModel {
         return valid;
     }
 
-    public boolean validateRegister(String name, String email, String password) {
+    public boolean validateRegister() {
         EmailRegisterError.setValue(null);
         NameRegisterError.setValue(null);
         PasswordRegisterError.setValue(null);
@@ -125,6 +168,24 @@ public class LoginRegisterViewModel extends AndroidViewModel {
         } catch (Exception exception) {
             Log.e("Error ==> ", "" + exception);
         }
+        return valid;
+    }
+
+    public boolean validateForgot() {
+        boolean valid = true;
+        try {
+            if (ForgotPassword.getValue() == null || ForgotPassword.getValue().isEmpty()) {
+                ForgotError.setValue("Please enter email address.");
+                valid = false;
+            }
+            if (!isEmailValid(ForgotPassword.getValue())) {
+                ForgotError.setValue("Please enter a valid email address.");
+                valid = false;
+            }
+        } catch (Exception exception) {
+            Log.e("Error ==> ", "" + exception);
+        }
+
         return valid;
     }
 

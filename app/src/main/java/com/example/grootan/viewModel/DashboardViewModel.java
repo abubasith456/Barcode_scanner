@@ -1,6 +1,7 @@
 package com.example.grootan.viewModel;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.grootan.DashboardActivity;
 import com.example.grootan.ScanBarCodeActivity;
 import com.example.grootan.databinding.ActivityDashboardBinding;
 import com.example.grootan.models.ScannedDataModel;
@@ -34,21 +36,26 @@ public class DashboardViewModel extends AndroidViewModel {
     private Application application;
     private AuthenticationRepository repository;
     private ActivityDashboardBinding activityDashboardBinding;
+    private DashboardActivity dashboardActivity;
 
     public DashboardViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
-        repository=new AuthenticationRepository(application);
+        repository = new AuthenticationRepository(application);
         scannedDataRepository = new ScannedDataRepository(application);
         firebaseFirestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+    }
+
+    public void getActivity(DashboardActivity dashboardActivity) {
+        this.dashboardActivity = dashboardActivity;
     }
 
     public LiveData<List<ScannedDataModel>> getScannedData() {
         return scannedDataRepository.getMutableLiveData();
     }
 
-    public MutableLiveData<UserModel> getCurrentUser(){
+    public MutableLiveData<UserModel> getCurrentUser() {
         return scannedDataRepository.getUserModelMutableLiveData();
     }
 
@@ -73,7 +80,7 @@ public class DashboardViewModel extends AndroidViewModel {
 
     public void onSignOut(View view) {
         try {
-            scannedDataRepository.signOut();
+            scannedDataRepository.signOut(dashboardActivity,activityDashboardBinding);
         } catch (Exception exception) {
             Log.e("Error ==> ", "" + exception);
         }

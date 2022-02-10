@@ -1,13 +1,20 @@
 package com.example.grootan.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.grootan.DashboardActivity;
+import com.example.grootan.R;
+import com.example.grootan.databinding.ItemDetailsShowBinding;
 import com.example.grootan.databinding.RowItemViewDataBinding;
 import com.example.grootan.models.ScannedDataModel;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 
@@ -16,6 +23,15 @@ import io.grpc.Context;
 public class ScannedDataAdapter extends RecyclerView.Adapter<ScannedDataAdapter.ScannedDataViewHolder> {
     private ArrayList<ScannedDataModel> scannedDataModelArrayList;
     private Context context;
+    private DashboardActivity activity;
+    private ItemDetailsShowBinding itemDetailsShowBinding;
+
+    public ScannedDataAdapter() {
+    }
+
+    public ScannedDataAdapter(DashboardActivity dashboardActivity) {
+        this.activity = dashboardActivity;
+    }
 
 //    public ScannedDataAdapter(ArrayList<ScannedData> scannedDataArrayList) {
 //        this.scannedDataArrayList = scannedDataArrayList;

@@ -52,9 +52,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_login);
-//        loginRegisterViewModel=new LoginRegisterViewModel(this,activityLoginBinding);
         loginRegisterViewModel = ViewModelProviders.of(this).get(LoginRegisterViewModel.class);
-
         activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         activityLoginBinding.setLifecycleOwner(this);
         activityLoginBinding.setLoginregisterViewModel(loginRegisterViewModel);
@@ -64,7 +62,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
             public void onChanged(FirebaseUser firebaseUser) {
                 if (firebaseUser != null) {
                     try {
-                        Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                        Intent intent = new Intent(LoginRegisterActivity.this, DashboardActivity.class);
                         startActivity(intent);
                     } catch (Exception exception) {
                         Log.e("Error ==> ", "" + exception);
@@ -72,5 +70,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

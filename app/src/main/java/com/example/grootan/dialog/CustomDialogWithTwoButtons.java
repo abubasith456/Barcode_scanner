@@ -50,7 +50,7 @@ public class CustomDialogWithTwoButtons extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AppTheme_Dialog_Cancel);
+//            setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AppTheme_Dialog_Cancel);
         } catch (Exception exception) {
             Log.e("Error ==> ", "" + exception);
         }
